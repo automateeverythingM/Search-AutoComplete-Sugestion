@@ -1,0 +1,10 @@
+.container {
+    position: relative;
+}
+.horizontalLine {
+    position: absolute;
+    border-top: 1px solid #ddd;
+    width: 90%;
+    left: 5%;
+    z-index: 60;
+}
