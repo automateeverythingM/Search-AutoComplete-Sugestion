@@ -3,32 +3,53 @@ import classes from "./style.module.css";
 import { BiSearchAlt } from "react-icons/bi";
 export default function Input({
     handleOnChange,
-    handleOnBlur,
-    handleOnFocus,
-    placeholderText = "Search",
     handleOnSubmit,
-    autoSuggest,
+    completeWord,
     ...props
 }) {
+    //local state for input
     const [inputValue, setInputValue] = useState("");
+    const [autoSuggestion, setAutoSuggestion] = useState("");
 
-    const handleOnChangeInput = (event) => {
-        setInputValue(event.target.value);
+    const appendSuggestion = (currentValue, suggestion) => {
+        const toAppend = suggestion.slice(currentValue.length);
+        currentValue += toAppend;
+        return currentValue;
     };
 
+    // set value and call call users handler
+    const handleOnChangeInput = (event) => {
+        //uzimamo vrednos inputa
+        const value = event.target.value;
+        //setujemo value na oba inputa
+        setInputValue(value);
+        setAutoSuggestion(value);
+        //ako je prazan vracamo
+        if (!value) return;
+        //saljemo vredonst na osnovu koje cemo dobiti suggestion
+        //
+        const wordsToComplete = completeWord(value);
+        wordsToComplete &&
+            setAutoSuggestion(appendSuggestion(value, wordsToComplete));
+    };
+
+    //Submit perventDefault();
     const handleOnSubmitInput = (event) => {
         event.preventDefault();
+        console.log(event);
     };
-
+    //clean input value
     const handleClearInput = (event) => {
         event.preventDefault();
         setInputValue("");
+        setAutoSuggestion("");
     };
 
+    //tab autoSuggest pass value to input field
     const handleKeyDown = (event) => {
         if (event.key === "Tab") {
             event.preventDefault();
-            autoSuggest && setInputValue(autoSuggest);
+            autoSuggestion && setInputValue(autoSuggestion);
             return;
         }
     };
@@ -38,19 +59,16 @@ export default function Input({
             className={[classes.wrapper, classes.borderAdjust].join(" ")}
         >
             <button onClick={handleOnSubmit} className={classes.btn}>
-                <BiSearchAlt size={"1.5em"} className={classes.icon} />
+                <BiSearchAlt size={"3em"} className={classes.icon} />
             </button>
             <div className={classes.inputsWrapper}>
                 <input
                     id="search"
-                    value={inputValue}
                     className={classes.input}
                     autoComplete="off"
                     onChange={handleOnChangeInput}
-                    onBlur={handleOnBlur}
-                    onFocus={handleOnFocus}
-                    placeholder={placeholderText}
                     {...props}
+                    value={inputValue}
                     onKeyDown={handleKeyDown}
                 />
                 <input
@@ -59,8 +77,9 @@ export default function Input({
                         classes.input,
                         classes.zIndex10,
                     ].join(" ")}
+                    autoComplete="off"
+                    value={autoSuggestion}
                     readOnly
-                    value={autoSuggest}
                 />
             </div>
             <button
