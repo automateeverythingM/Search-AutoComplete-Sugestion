@@ -1,5 +1,6 @@
 .wrapper {
     box-shadow: 1px 1px 2px #ddd;
+    position: relative;
     overflow: hidden;
     border: 1px solid #ddd;
     display: flex;
@@ -14,13 +15,12 @@
 }
 
 .input {
-    position: absolute;
-    width: 1000vw;
     outline: none;
+    font-size: 1em;
     border: none;
-    font-size: 0.7em;
     color: #333;
     padding: 0.2em 0;
+    width: 100%;
     background: transparent;
     z-index: 20;
 }
@@ -90,12 +90,9 @@
     -o-transform: scale(0.98);
 }
 .inputsWrapper {
-    overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
-    width: 300px;
-    height: 1em;
 }
 .container {
     position: relative;
@@ -108,12 +105,4 @@
     -ms-border-radius: 0.2em 0.2em 0 0;
     -o-border-radius: 0.2em 0.2em 0 0;
     border-bottom: none;
-}
-
-.hidden {
-    visibility: hidden;
-}
-
-.show {
-    visibility: visible;
 }

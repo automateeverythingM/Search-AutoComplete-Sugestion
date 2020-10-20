@@ -5,12 +5,19 @@ export default function Input({
     handleOnChange,
     handleOnSubmit,
     completeWord,
+    SearchIcon = (
+        <button onClick={handleOnSubmit} className={classes.btn}>
+            <BiSearchAlt size={"3em"} className={classes.icon} />
+        </button>
+    ),
     ...props
 }) {
     //local state for input
     const [inputValue, setInputValue] = useState("");
+    //autosugustion koji se dopunjuje
     const [autoSuggestion, setAutoSuggestion] = useState("");
 
+    //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
         const toAppend = suggestion.slice(currentValue.length);
         currentValue += toAppend;
@@ -56,11 +63,9 @@ export default function Input({
     return (
         <form
             onSubmit={handleOnSubmitInput}
-            className={[classes.wrapper, classes.borderAdjust].join(" ")}
+            className={[classes.wrapper].join(" ")}
         >
-            <button onClick={handleOnSubmit} className={classes.btn}>
-                <BiSearchAlt size={"3em"} className={classes.icon} />
-            </button>
+            {SearchIcon}
             <div className={classes.inputsWrapper}>
                 <input
                     id="search"
@@ -82,9 +87,14 @@ export default function Input({
                     readOnly
                 />
             </div>
+
             <button
                 onClick={handleClearInput}
-                className={[classes.btn, classes.close].join(" ")}
+                className={[
+                    classes.btn,
+                    classes.close,
+                    !!inputValue.length ? classes.show : classes.hidden,
+                ].join(" ")}
             >
                 &times;
             </button>
