@@ -1,34 +1,33 @@
-import React, { useState, useRef, useEffect } from "react";
-import classes from "./style.module.css";
+import React, { useEffect, useRef } from "react";
+import { useState } from "react";
 import { BiSearchAlt } from "react-icons/bi";
-import { render } from "@testing-library/react";
-export default function Input({
-    handleOnChange,
-    handleOnSubmit,
-    completeWord,
-    SearchIcon = (
-        <button onClick={handleOnSubmit} className={classes.btn}>
-            <BiSearchAlt size={"3em"} className={classes.icon} />
-        </button>
+
+import { CloseButton, Input, InputWrapper, Wrapper, Icon } from "../StyledComp";
+export default function InputStyled({
+    size,
+    prependIcon = (
+        <Icon color={"#555"}>
+            <BiSearchAlt size={size} />
+        </Icon>
     ),
-    ...props
+    handleOnChange,
+    suggestedWord,
 }) {
     //local state for input
     const [inputValue, setInputValue] = useState("");
     //autosugustion koji se dopunjuje
     const [autoSuggestion, setAutoSuggestion] = useState("");
     const input = useRef();
-
-    useEffect(() => {
-        if (inputValue.length === 0) input.current.focus();
-    }, [inputValue.length]);
-
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
         const toAppend = suggestion.slice(currentValue.length);
         currentValue += toAppend;
         return currentValue;
     };
+
+    useEffect(() => {
+        if (inputValue === "") input.current.focus();
+    }, [inputValue]);
 
     // set value and call call users handler
     const handleOnChangeInput = (event) => {
@@ -37,26 +36,22 @@ export default function Input({
         //setujemo value na oba inputa
         setInputValue(value);
         setAutoSuggestion(value);
+
         //ako je prazan vracamo
         if (!value) return;
         //saljemo vredonst na osnovu koje cemo dobiti suggestion
-        //
-        const wordsToComplete = completeWord(value);
+
+        console.log("handleOnChangeInput -> suggestedWord", suggestedWord);
+        const wordsToComplete = suggestedWord(value);
         wordsToComplete &&
             setAutoSuggestion(appendSuggestion(value, wordsToComplete));
     };
 
-    //Submit perventDefault();
-    const handleOnSubmitInput = (event) => {
-        event.preventDefault();
-        console.log(event);
-    };
     //clean input value
     const handleClearInput = (event) => {
         event.preventDefault();
         setInputValue("");
         setAutoSuggestion("");
-        event.target.focus();
     };
 
     //tab autoSuggest pass value to input field
@@ -64,48 +59,37 @@ export default function Input({
         if (event.key === "Tab") {
             event.preventDefault();
             autoSuggestion && setInputValue(autoSuggestion);
-            return;
         }
     };
     return (
-        <form
-            onSubmit={handleOnSubmitInput}
-            className={[classes.wrapper].join(" ")}
-        >
-            {SearchIcon}
-            <div className={classes.inputsWrapper}>
-                <input
-                    id="search"
-                    className={classes.input}
+        <Wrapper size={size}>
+            {prependIcon}
+            <InputWrapper>
+                <Input
+                    type="text"
                     autoComplete="off"
-                    onChange={handleOnChangeInput}
-                    ref={input}
-                    {...props}
                     value={inputValue}
+                    onChange={handleOnChangeInput}
                     onKeyDown={handleKeyDown}
+                    zIndex="50"
+                    ref={input}
                 />
-                <input
-                    className={[
-                        classes.autoSuggest,
-                        classes.input,
-                        classes.zIndex10,
-                    ].join(" ")}
+                <Input
+                    type="text"
+                    readOnly
                     autoComplete="off"
                     value={autoSuggestion}
-                    readOnly
+                    zIndex="20"
+                    color="#d4d4d4"
                 />
-            </div>
-
-            <button
+            </InputWrapper>
+            <CloseButton
+                color="red"
+                show={inputValue.length}
                 onClick={handleClearInput}
-                className={[
-                    classes.btn,
-                    classes.close,
-                    !!inputValue.length ? classes.show : classes.hidden,
-                ].join(" ")}
             >
                 &times;
-            </button>
-        </form>
+            </CloseButton>
+        </Wrapper>
     );
 }
