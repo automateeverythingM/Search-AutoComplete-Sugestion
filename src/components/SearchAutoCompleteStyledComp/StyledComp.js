@@ -9,6 +9,7 @@ export const Input = styled.input`
     font-size: ${(props) => props.fontSize || "0.7em"};
     color: ${(props) => props.color || "#333"};
     padding: 0.2em 0;
+    padding-left: 0.1em;
     background: transparent;
     z-index: ${(props) => props.zIndex};
 `;
@@ -25,7 +26,7 @@ export const InputWrapper = styled.div`
 
 export const Wrapper = styled.div`
     font-size: ${(props) => props.size || "1rem"};
-    box-shadow: 1px 1px 2px #ddd;
+    box-shadow: 2px 3px 4px #ddd;
     overflow: hidden;
     border-right: 1px solid #ddd;
     border-top: 1px solid #eee;
@@ -34,7 +35,7 @@ export const Wrapper = styled.div`
     align-items: center;
     overflow: hidden;
     border-radius: 0.2em;
-    padding: 0 0 0 0.3em;
+    padding: 0.2em 0 0.2em 0.3em;
     -webkit-border-radius: 0.2em;
     -moz-border-radius: 0.2em;
     -ms-border-radius: 0.2em;

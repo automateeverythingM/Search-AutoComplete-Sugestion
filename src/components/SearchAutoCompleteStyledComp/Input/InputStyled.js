@@ -20,6 +20,9 @@ export default function InputStyled({
     const input = useRef();
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
+        console.log("appendSuggestion -> suggestion", suggestion);
+        console.log("appendSuggestion -> currentValue", currentValue);
+
         const toAppend = suggestion.slice(currentValue.length);
         currentValue += toAppend;
         return currentValue;
@@ -41,10 +44,9 @@ export default function InputStyled({
         if (!value) return;
         //saljemo vredonst na osnovu koje cemo dobiti suggestion
 
-        console.log("handleOnChangeInput -> suggestedWord", suggestedWord);
-        const wordsToComplete = suggestedWord(value);
-        wordsToComplete &&
-            setAutoSuggestion(appendSuggestion(value, wordsToComplete));
+        const name = suggestedWord(value);
+        console.log("handleOnChangeInput -> name", name)
+        name && setAutoSuggestion(appendSuggestion(value, name));
     };
 
     //clean input value

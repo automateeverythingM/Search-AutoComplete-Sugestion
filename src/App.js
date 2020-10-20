@@ -4,22 +4,14 @@ import "./App.css";
 import SearchAutoCompleteApp from "./components/SearchAutoComplete/SearchAutopCompleteApp";
 import InputStyled from "./components/SearchAutoCompleteStyledComp/Input/InputStyled";
 import AutoCompleteStyled from "./components/SearchAutoCompleteStyledComp/AutoComplete/AutoCompleteStyled";
+import SearchACSC from "./components/SearchAutoCompleteStyledComp/SearchACSC";
 
 function App() {
-    const wordsToComplete = ["react", "javascript", "php", "ruby", "hypertext"];
-    const suggestionWords = (input) => {
-        return wordsToComplete.find((x) =>
-            x.toLowerCase().startsWith(input.toLowerCase())
-        );
-    };
+    
     return (
         <div className="App">
-            <SearchAutoCompleteApp />
             <br />
-            <div>
-                <InputStyled size={"2em"} suggestedWord={suggestionWords} />
-                <AutoCompleteStyled />
-            </div>
+            <SearchACSC  />
         </div>
     );
 }
