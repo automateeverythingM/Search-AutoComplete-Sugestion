@@ -5,12 +5,13 @@ import SearchAutoCompleteApp from "./components/SearchAutoComplete/SearchAutopCo
 import InputStyled from "./components/SearchAutoCompleteStyledComp/Input/InputStyled";
 import AutoCompleteStyled from "./components/SearchAutoCompleteStyledComp/AutoComplete/AutoCompleteStyled";
 import SearchACSC from "./components/SearchAutoCompleteStyledComp/SearchACSC";
+import SeaechAppHolder from "./components/SearchAutoCompleteStyledComp/SeaechAppHolder";
 
 function App() {
     return (
         <div className="App">
             <br />
-            <SearchACSC />
+            <SeaechAppHolder />
             <h3>Hello</h3>
         </div>
     );

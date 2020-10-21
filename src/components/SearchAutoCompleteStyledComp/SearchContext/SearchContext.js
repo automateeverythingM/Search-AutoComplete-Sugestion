@@ -16,7 +16,7 @@ export default function SearchContext({ children }) {
     const value = {
         tagList: [...state.tagList],
         dropdownList: [...state.dropdownList],
-        keyCodes: [...state.keyCodes],
+        keyCodes: { ...state.keyCodes },
         manageTagList: (event, tagName) => {
             dispatch({
                 type: actions.MENAGE_TAG_LIST,

@@ -4,6 +4,7 @@ import InputStyled from "./Input/InputStyled";
 import mockStates from "../../mocks/inputAutoComplete";
 import { useState } from "react";
 import { Form } from "./StyledComp";
+import Provider from "./SearchContext/SearchContext";
 
 export default function SearchACSC() {
     const [autocompleteList, setAutocompleteList] = useState([]);
