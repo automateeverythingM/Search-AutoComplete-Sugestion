@@ -130,10 +130,23 @@ export const Li = styled.li`
 //!Search dropdown
 
 //! TAGS
+export const CloseTag = styled.label`
+    display: inline-block;
+    align-self: center;
+    margin: 0;
+    border: none;
+    height: 80%;
+    font-size: inherit;
+    font-weight: bold;
+    font-family: inherit;
+    padding: 0 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+`;
 export const LiTag = styled.li`
     display: inline-flex;
     padding: ${(props) => props.padding || "5px 15px"};
-    margin: 10px 10px 0px 0px;
+    margin: 0.8em 0.5em 0.3em 0px;
     font-size: inherit;
     border-radius: ${(props) => props.borderRadius || "4px"};
     overflow: hidden;
@@ -141,19 +154,60 @@ export const LiTag = styled.li`
     cursor: pointer;
     border: 1px solid transparent;
     transition: all 0.1s ease-in-out;
+    transition: box-shadow 0.3s ease-in-out;
     box-shadow: 1px 0 3px #999;
-    color: whitesmoke;
-    background-color: ${(props) => props.backgroundColor || "#131518"};
-    ${(props) =>
-        !props.selected &&
-        css`
-            background-color: transparent;
-            ${"" /* border: 1px solid #131518; */}
-            box-shadow: 1px 0 3px  #999;
-            color: #131518;
-        `}
+    color: #333;
+    background-color: white;
+
+    &:hover {
+        box-shadow: 0px 0px 3px #999;
+    }
     &:active {
         background-color: ${(props) => props.boxShadowColorActive};
     }
+
+    &:hover ${CloseTag} {
+        box-shadow: 0px 1px 2px #aaa;
+    }
+    &:active ${CloseTag} {
+        box-shadow: 0 -1px 1px #999;
+    }
 `;
+
+export const TagLabel = styled.div`
+    display: inline-block;
+    font-size: inherit;
+    text-decoration: none;
+    color: ${(props) => props.textColor};
+    padding: 5px;
+    font-weight: bold;
+`;
+
 //! TAGS
+
+//!
+/* ${(props) =>
+        props.selected &&
+        css`
+            background-color: transparent;
+            ${"" /* border: 1px solid #131518; }
+            box-shadow: 1px 0 3px  #999;
+            color: #131518;
+        `} */
+
+/* ${(props) =>
+        props.selected &&
+        css`
+            &:hover {
+                box-shadow: ${(props) =>
+                    `0px 0px 2px 1px ${darken(0.2, props.backgroundColor)}`};
+                    
+        
+            &:active {
+                box-shadow: ${(props) =>
+                    `0px 0px 2px 2px ${darken(0.1, props.backgroundColor)}`};
+                background-color: ${(props) =>
+                    darken(0.1, props.backgroundColor)};
+            }
+        `} */
+//!

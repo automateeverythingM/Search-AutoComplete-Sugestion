@@ -1,8 +1,6 @@
 import { nanoid as id } from "nanoid";
 
-export function manageTagList(event, state, tagName) {
-    event.preventDefault();
-
+export function manageTagList(state, tagName) {
     //ako je prazno polje izlazimo iz funkcije
     if (!tagName) return;
 
@@ -29,12 +27,12 @@ export function manageTagList(event, state, tagName) {
     }
 }
 
-export function onDeleteHandler(event, state, id) {
+export function onDeleteHandler(state, id) {
     const index = state.findIndex((tag) => tag.id === id);
     state.splice(index, 1);
 }
 
-export function toggleTagHandler(event, state, id) {
+export function toggleTagHandler(state, id) {
     const tag = state.find((tag) => tag.id === id);
     tag.selected = !tag.selected;
 }

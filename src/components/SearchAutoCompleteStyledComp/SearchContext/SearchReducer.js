@@ -16,16 +16,16 @@ export const actions = {
 export default function searchReducer(state, action) {
     return produce(state, (draft) => {
         if ((action.type = actions.MENAGE_TAG_LIST)) {
-            const { event, tagName } = action.payload;
-            manageTagList(event, draft.tagList, tagName);
+            const { tagName } = action.payload;
+            manageTagList(draft.tagList, tagName);
         }
         if ((action.type = actions.DELETE_TAG)) {
-            const { event, id } = action.payload;
-            onDeleteHandler(event, draft.tagList, id);
+            const { id } = action.payload;
+            onDeleteHandler(draft.tagList, id);
         }
         if ((action.type = actions.TOGGLE_TAG)) {
-            const { event, id } = action.payload;
-            toggleTagHandler(event, draft.tagList, id);
+            const { id } = action.payload;
+            toggleTagHandler(draft.tagList, id);
         }
 
         sortBy(draft.tagList, ["-selected", "-defaultTag", "label"]);

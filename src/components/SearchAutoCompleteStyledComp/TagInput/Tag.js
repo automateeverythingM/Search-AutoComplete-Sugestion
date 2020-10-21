@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    LiTag,
-    TagLabel,
-    CloseTag,
-} from "../../../../../styled-components/sComponents";
-
-import darkenColor from "../../../../../helper/helper";
+import { CloseTag, LiTag, TagLabel } from "../StyledComp";
 
 export default function TagStyledComponent({
     label,
@@ -15,8 +9,6 @@ export default function TagStyledComponent({
     toggleTagHandler,
     onDeleteHandler,
 }) {
-    const hoverColor = darkenColor(backgroundColor, 20);
-    const boxShadowColorActive = darkenColor(hoverColor, 10);
     return (
         <LiTag
             backgroundColor={backgroundColor}
@@ -29,8 +21,7 @@ export default function TagStyledComponent({
                 <CloseTag
                     onClick={onDeleteHandler}
                     selected={selectedTag}
-                    boxShadowColor={hoverColor}
-                    boxShadowColorActive={boxShadowColorActive}
+                    backgroundColor={backgroundColor}
                 >
                     &times;
                 </CloseTag>
