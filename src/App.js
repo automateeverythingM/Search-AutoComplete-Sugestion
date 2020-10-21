@@ -7,11 +7,11 @@ import AutoCompleteStyled from "./components/SearchAutoCompleteStyledComp/AutoCo
 import SearchACSC from "./components/SearchAutoCompleteStyledComp/SearchACSC";
 
 function App() {
-    
     return (
         <div className="App">
             <br />
-            <SearchACSC  />
+            <SearchACSC />
+            <h3>Hello</h3>
         </div>
     );
 }

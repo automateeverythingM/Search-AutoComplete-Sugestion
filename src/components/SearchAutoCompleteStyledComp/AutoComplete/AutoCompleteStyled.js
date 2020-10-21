@@ -1,14 +1,14 @@
 import React from "react";
-import { Li, Ul } from "./StyledComponents";
+import { Li, UlDropdown } from "../StyledComp";
 
 export default function AutoCompleteStyled({ data = [] }) {
     return (
-        <Ul>
+        <UlDropdown position="absolute">
             {data.map((item) => (
                 <Li key={item.id} data-id={item.id}>
                     {item.name}
                 </Li>
             ))}
-        </Ul>
+        </UlDropdown>
     );
 }

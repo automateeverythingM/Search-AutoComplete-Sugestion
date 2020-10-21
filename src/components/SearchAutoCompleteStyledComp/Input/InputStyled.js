@@ -5,13 +5,15 @@ import { BiSearchAlt } from "react-icons/bi";
 import { CloseButton, Input, InputWrapper, Wrapper, Icon } from "../StyledComp";
 export default function InputStyled({
     size,
-    prependIcon = (
-        <Icon color={"#555"}>
-            <BiSearchAlt size={size} />
-        </Icon>
-    ),
+    // prependIcon = (
+    //     <Icon color={"#555"}>
+    //         <BiSearchAlt size={size} />
+    //     </Icon>
+    // ),
+    prependIcon,
     handleOnChange,
     suggestedWord,
+    dropDownStyle,
 }) {
     //local state for input
     const [inputValue, setInputValue] = useState("");
@@ -20,9 +22,6 @@ export default function InputStyled({
     const input = useRef();
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
-        console.log("appendSuggestion -> suggestion", suggestion);
-        console.log("appendSuggestion -> currentValue", currentValue);
-
         const toAppend = suggestion.slice(currentValue.length);
         currentValue += toAppend;
         return currentValue;
@@ -30,23 +29,33 @@ export default function InputStyled({
 
     useEffect(() => {
         if (inputValue === "") input.current.focus();
+
+        let timer = setTimeout(() => {
+            //saljemo vredonst na osnovu koje cemo dobiti suggestion
+            const name = suggestedWord(inputValue);
+            if (name === autoSuggestion) return;
+            else if (!name) setAutoSuggestion("");
+            else {
+                setAutoSuggestion(appendSuggestion(inputValue, name));
+            }
+        }, 50);
+
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inputValue]);
 
     // set value and call call users handler
     const handleOnChangeInput = (event) => {
         //uzimamo vrednos inputa
         const value = event.target.value;
+
         //setujemo value na oba inputa
         setInputValue(value);
-        setAutoSuggestion(value);
 
         //ako je prazan vracamo
-        if (!value) return;
-        //saljemo vredonst na osnovu koje cemo dobiti suggestion
+        // if (!value) return;
 
-        const name = suggestedWord(value);
-        console.log("handleOnChangeInput -> name", name)
-        name && setAutoSuggestion(appendSuggestion(value, name));
+        handleOnChange(value);
     };
 
     //clean input value
@@ -64,7 +73,7 @@ export default function InputStyled({
         }
     };
     return (
-        <Wrapper size={size}>
+        <Wrapper size={size} dropDownStyle={dropDownStyle}>
             {prependIcon}
             <InputWrapper>
                 <Input

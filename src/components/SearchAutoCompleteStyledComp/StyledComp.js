@@ -1,5 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { lighten, darken } from "polished";
+
+//!!!INPUTSTYLE
 export const Input = styled.input`
     position: ${(props) => props.position || "absolute"};
     font-size: 0.7em;
@@ -20,7 +22,7 @@ export const InputWrapper = styled.div`
     display: flex;
     align-items: center;
     padding-left: 0.7em;
-    width: ${(props) => props.width || "300px"};
+    width: ${(props) => props.width || "500px"};
     height: ${(props) => props.height || "1.5em"};
 `;
 
@@ -40,6 +42,12 @@ export const Wrapper = styled.div`
     -moz-border-radius: 0.2em;
     -ms-border-radius: 0.2em;
     -o-border-radius: 0.2em;
+
+    ${(props) =>
+        props.dropDownStyle &&
+        css`
+            border-radius: 0.2em 0.2em 0 0;
+        `}
 `;
 export const Button = styled.button`
     background: none;
@@ -82,3 +90,70 @@ export const CloseButton = styled(Button)`
         transform: scale(0.97);
     }
 `;
+//!!!INPUTSTYLE
+
+//!! SearchACSC
+export const Form = styled.form`
+    position: relative;
+`;
+//!! SearchACSC
+
+//!Search dropdown
+export const Ul = styled.ul`
+    display: ${(props) => props.display};
+    position: ${(props) => props.position};
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+`;
+
+export const UlDropdown = styled(Ul)`
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #eee;
+    border-left: 1px solid #eee;
+    box-shadow: 1px 1px 2px #ddd;
+    border-radius: 0.2em;
+`;
+
+export const Li = styled.li`
+    text-align: ${(props) => props.textAlign || "left"};
+    background-color: ${(props) => props.backgroundColor || "white"};
+    padding: 0.5em 3em;
+    z-index: 999;
+
+    &:hover {
+        background-color: ${(props) =>
+            darken(0.1, props.backgroundColor || "white")};
+    }
+`;
+//!Search dropdown
+
+//! TAGS
+export const LiTag = styled.li`
+    display: inline-flex;
+    padding: ${(props) => props.padding || "5px 15px"};
+    margin: 10px 10px 0px 0px;
+    font-size: inherit;
+    border-radius: ${(props) => props.borderRadius || "4px"};
+    overflow: hidden;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.1s ease-in-out;
+    box-shadow: 1px 0 3px #999;
+    color: whitesmoke;
+    background-color: ${(props) => props.backgroundColor || "#131518"};
+    ${(props) =>
+        !props.selected &&
+        css`
+            background-color: transparent;
+            ${"" /* border: 1px solid #131518; */}
+            box-shadow: 1px 0 3px  #999;
+            color: #131518;
+        `}
+    &:active {
+        background-color: ${(props) => props.boxShadowColorActive};
+    }
+`;
+//! TAGS
