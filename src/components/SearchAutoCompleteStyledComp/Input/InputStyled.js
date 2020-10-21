@@ -1,15 +1,13 @@
 import React, { useEffect, useRef } from "react";
+import { useContext } from "react";
 import { useState } from "react";
 import { BiSearchAlt } from "react-icons/bi";
+import { MainSearchContext } from "../SearchContext/SearchContext";
+import { actions } from "../SearchContext/SearchReducer";
 
 import { CloseButton, Input, InputWrapper, Wrapper, Icon } from "../StyledComp";
 export default function InputStyled({
     size,
-    // prependIcon = (
-    //     <Icon color={"#555"}>
-    //         <BiSearchAlt size={size} />
-    //     </Icon>
-    // ),
     prependIcon,
     handleOnChange,
     suggestedWord,
@@ -19,6 +17,7 @@ export default function InputStyled({
     const [inputValue, setInputValue] = useState("");
     //autosugustion koji se dopunjuje
     const [autoSuggestion, setAutoSuggestion] = useState("");
+    const { dispatch } = useContext(MainSearchContext);
     const input = useRef();
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
@@ -70,6 +69,17 @@ export default function InputStyled({
         if (event.key === "Tab") {
             event.preventDefault();
             autoSuggestion && setInputValue(autoSuggestion);
+        } else if (event.key === "Backspace") {
+            dispatch({ type: actions.POP_TAG });
+        } else if (event.key === "Enter") {
+            const value = event.target.value;
+            dispatch({
+                type: actions.ADD_TAG,
+                payload: { tag: value },
+            });
+
+            setInputValue("");
+            setAutoSuggestion("");
         }
     };
     return (

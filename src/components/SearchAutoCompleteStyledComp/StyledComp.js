@@ -22,7 +22,7 @@ export const InputWrapper = styled.div`
     display: flex;
     align-items: center;
     padding-left: 0.7em;
-    width: ${(props) => props.width || "500px"};
+    width: ${(props) => props.width || "100%"};
     height: ${(props) => props.height || "1.5em"};
 `;
 
@@ -93,7 +93,7 @@ export const CloseButton = styled(Button)`
 //!!!INPUTSTYLE
 
 //!! SearchACSC
-export const Form = styled.form`
+export const Form = styled.div`
     position: relative;
 `;
 //!! SearchACSC
@@ -135,7 +135,6 @@ export const CloseTag = styled.label`
     align-self: center;
     margin: 0;
     border: none;
-    height: 80%;
     font-size: inherit;
     font-weight: bold;
     font-family: inherit;
@@ -146,7 +145,7 @@ export const CloseTag = styled.label`
 export const LiTag = styled.li`
     display: inline-flex;
     padding: ${(props) => props.padding || "5px 15px"};
-    margin: 0.8em 0.5em 0.3em 0px;
+    margin: 0 0.5em 0.5em 0px;
     font-size: inherit;
     border-radius: ${(props) => props.borderRadius || "4px"};
     overflow: hidden;

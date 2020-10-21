@@ -34,7 +34,6 @@ export default function SearchACSC() {
     };
 
     return (
-        
         <Form>
             <InputStyled
                 size={"2em"}

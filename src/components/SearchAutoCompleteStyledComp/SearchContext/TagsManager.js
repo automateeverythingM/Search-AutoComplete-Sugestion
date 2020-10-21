@@ -11,7 +11,7 @@ export function manageTagList(state, tagName) {
 
     //findIndex vraca -1 ako nije nasao nista
     if (tag >= 0) {
-        state[tag].selected = !state[tag].selected;
+        return;
     } else {
         //novi tag sa id
         const newTag = {
@@ -24,12 +24,19 @@ export function manageTagList(state, tagName) {
             defaultTag: false,
         };
         state.push(newTag);
+        console.log(state);
     }
 }
 
 export function onDeleteHandler(state, id) {
     const index = state.findIndex((tag) => tag.id === id);
     state.splice(index, 1);
+}
+
+export function onBackSpace(state) {
+    console.log("onBackSpace -> state", state);
+
+    state.pop();
 }
 
 export function toggleTagHandler(state, id) {
