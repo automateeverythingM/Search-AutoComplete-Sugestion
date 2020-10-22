@@ -3,21 +3,25 @@ import { MainSearchContext } from "../SearchContext/SearchContext";
 import { actions } from "../SearchContext/SearchReducer";
 import { Li, UlDropdown } from "../StyledComp";
 
-export default function AutoCompleteStyled({ data = [] }) {
+export default function AutoCompleteStyled() {
     const {
-        state: { dropdownSelector },
+        state: { dropdownSelector, autocompleteList: data },
         dispatch,
     } = useContext(MainSearchContext);
-    console.log("AutoCompleteStyled -> dropdownSelector", dropdownSelector);
+    //resetujemo state zbog key pa posle setujemo input 
+    //NOTE: trebalo bi da  napisem jedan metod za oba
+    function onClickHandler(e) {
+        dispatch({ type: actions.RESET_STATE });
+        dispatch({
+            type: actions.SET_INPUT_VALUE,
+            payload: { value: e.target.innerText },
+        });
+    }
+
     return (
         <UlDropdown
             position="absolute"
-            onClick={(e) => {
-                dispatch({
-                    type: actions.SET_SELECTOR,
-                    payload: { index: e.target.dataset.id },
-                });
-            }}
+            onClick={onClickHandler}
             onMouseLeave={(e) => {
                 dispatch({
                     type: actions.SET_SELECTOR,
@@ -29,12 +33,6 @@ export default function AutoCompleteStyled({ data = [] }) {
                 <Li
                     selected={index === dropdownSelector}
                     key={item.code}
-                    onMouseEnter={(e) => {
-                        dispatch({
-                            type: actions.SET_SELECTOR,
-                            payload: { index: e.target.dataset.id },
-                        });
-                    }}
                     data-id={index}
                 >
                     {item.name}

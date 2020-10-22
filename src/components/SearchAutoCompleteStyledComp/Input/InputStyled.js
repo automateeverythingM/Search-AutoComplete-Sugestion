@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { useContext } from "react";
-import { useState } from "react";
 import { MainSearchContext } from "../SearchContext/SearchContext";
 import { actions } from "../SearchContext/SearchReducer";
-
-import { CloseButton, Input, InputWrapper, Wrapper, Icon } from "../StyledComp";
+import { CloseButton, Input, InputWrapper, Wrapper } from "../StyledComp";
 export default function InputStyled({
     size,
     prependIcon,
@@ -13,35 +11,42 @@ export default function InputStyled({
     dropDownStyle,
 }) {
     //local state for input
-    const [inputValue, setInputValue] = useState("");
     //autosugustion koji se dopunjuje
-    const [autoSuggestion, setAutoSuggestion] = useState("");
-    const { dispatch } = useContext(MainSearchContext);
-    const { state: { inputValue, autoSuggestion }, dispatch } = useContext(MainSearchContext)}
+    const {
+        state: { inputValue, autoSuggestion },
+        dispatch,
+    } = useContext(MainSearchContext);
+
     const input = useRef();
+    //FIXME: treba da prepravim ovo i da napravim poseban metod
+    const setValue = (action, value) =>
+        dispatch({ type: action, payload: { value } });
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
         const toAppend = suggestion.slice(currentValue.length);
         currentValue += toAppend;
         return currentValue;
     };
-
+    //NOTE: treba doraditi ovo ne potrebno komplikovano 
     useEffect(() => {
         if (inputValue === "") input.current.focus();
-
+        //odlaganje treba da se osmisli neki alg
         let timer = setTimeout(() => {
             //saljemo vredonst na osnovu koje cemo dobiti suggestion
             const name = suggestedWord(inputValue);
             if (name === autoSuggestion) return;
-            else if (!name) setAutoSuggestion("");
+            else if (!name) setValue(actions.SET_AUTO_SUGGESTION, "");
             else {
-                setAutoSuggestion(appendSuggestion(inputValue, name));
+                setValue(
+                    actions.SET_AUTO_SUGGESTION,
+                    appendSuggestion(inputValue, name)
+                );
             }
-        }, 0);
+        }, 50);
 
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [inputValue]);
+    });
 
     // set value and call call users handler
     const handleOnChangeInput = (event) => {
@@ -49,7 +54,7 @@ export default function InputStyled({
         const value = event.target.value;
 
         //setujemo value na oba inputa
-        setInputValue(value);
+        setValue(actions.SET_INPUT_VALUE, value);
 
         //ako je prazan vracamo
         // if (!value) return;
@@ -59,33 +64,44 @@ export default function InputStyled({
     //clean input value
     const handleClearInput = (event) => {
         event.preventDefault();
-        setInputValue("");
-        setAutoSuggestion("");
+        setValue(actions.CLEAR_INPUT);
     };
 
     //tab autoSuggest pass value to input field
     const handleKeyDown = (event) => {
+        const inputvalue = event.target.value;
         if (event.key === "Tab") {
             event.preventDefault();
-            autoSuggestion && setInputValue(autoSuggestion);
-        } else if (event.key === "Backspace" && !event.target.value) {
+            autoSuggestion && setValue(actions.SET_INPUT_VALUE, autoSuggestion);
+        }
+
+        //
+        else if (event.key === "Backspace" && !inputvalue) {
             dispatch({ type: actions.POP_TAG });
-        } else if (event.key === "Enter") {
-            const value = event.target.value;
+        }
+
+        //
+        else if (event.key === "Enter") {
             dispatch({
                 type: actions.ADD_TAG,
-                payload: { tag: value },
+                payload: { tag: inputvalue },
             });
 
-            setInputValue("");
-            setAutoSuggestion("");
-        } else if (event.key === "ArrowDown") {
+            //
+            setValue(actions.RESET_STATE);
+        }
+
+        //
+        else if (event.key === "ArrowDown") {
             event.preventDefault();
             dispatch({
                 type: actions.MOVE_SELECTOR,
                 payload: { key: event.key },
             });
-        } else if (event.key === "ArrowUp") {
+        }
+
+        //
+        else if (event.key === "ArrowUp") {
             event.preventDefault();
             dispatch({
                 type: actions.MOVE_SELECTOR,

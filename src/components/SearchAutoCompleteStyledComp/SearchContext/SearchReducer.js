@@ -9,8 +9,11 @@ export const actions = {
     ADD_TAG: "ADD_TAG",
     MOVE_SELECTOR: "MOVE_SELECTOR",
     SET_SELECTOR: "SET_SELECTOR",
-    SET_INPUT_VALUE: "SET_INPUT_VALUE",
     SET_AUTO_SUGGESTION: "SET_AUTO_SUGGESTION",
+    SET_AUTOCOMPLETE_LIST: "SET_AUTOCOMPLETE_LIST",
+    SET_INPUT_VALUE: "SET_INPUT_VALUE",
+    CLEAR_INPUT: "CLEAR_INPUT",
+    RESET_STATE: "RESET_STATE",
 };
 
 export default function searchReducer(state, action) {
@@ -38,6 +41,17 @@ export default function searchReducer(state, action) {
         } else if (action.type === actions.SET_AUTO_SUGGESTION) {
             const { value } = action.payload;
             draft.autoSuggestion = value;
+        } else if (action.type === actions.CLEAR_INPUT) {
+            draft.autoSuggestion = "";
+            draft.inputValue = "";
+        } else if (action.type === actions.SET_AUTOCOMPLETE_LIST) {
+            const { value } = action.payload;
+            draft.autocompleteList = value;
+        } else if (action.type === actions.RESET_STATE) {
+            draft.autoSuggestion = "";
+            draft.inputValue = "";
+            draft.autocompleteList = [];
+            draft.dropdownSelector = -1;
         }
 
         // sortBy(draft.tagList, ["-selected", "-defaultTag", "label"]);

@@ -1,9 +1,13 @@
 import React, { useReducer } from "react";
 import reducer from "./SearchReducer";
 import tagList from "../../../mocks/tagsMock";
+
+//FIXME: treba da prepravim keycodes i da ih upotrebim
 const initialState = {
     tagList: tagList,
     dropdownList: [],
+    autocompleteList: [],
+    tempInputValue: "",
     inputValue: "",
     autoSuggestion: "",
     dropdownSelector: -1,
@@ -14,6 +18,7 @@ const initialState = {
     moveSelector: () => {},
     setInputValue: () => {},
     setAutoSuggestion: () => {},
+    setAutocompleteList: () => {},
 };
 
 export const MainSearchContext = React.createContext({});
