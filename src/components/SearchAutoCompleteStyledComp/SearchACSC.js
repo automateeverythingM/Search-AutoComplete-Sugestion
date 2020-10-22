@@ -53,7 +53,7 @@ export default function SearchACSC() {
                 handleOnChange={onChange}
                 dropDownStyle={autocompleteList.length}
             />
-            {dropdown && <AutoCompleteStyled/>}
+            {dropdown && <AutoCompleteStyled />}
         </RelativeContainer>
     );
 }

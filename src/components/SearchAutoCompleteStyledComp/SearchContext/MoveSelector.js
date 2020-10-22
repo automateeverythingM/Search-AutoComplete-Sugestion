@@ -6,7 +6,7 @@ export function moveSelector(state, key) {
         state.tempInputValue = state.inputValue;
     }
     current += keyCodes[key];
-    if (current >= -1 && current < state.tagList.length) {
+    if (current >= -1 && current < state.autocompleteList.length) {
         state.dropdownSelector = current;
         if (current === -1) {
             state.inputValue = state.tempInputValue;

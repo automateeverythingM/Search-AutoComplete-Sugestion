@@ -27,7 +27,7 @@ export default function InputStyled({
         currentValue += toAppend;
         return currentValue;
     };
-    //NOTE: treba doraditi ovo ne potrebno komplikovano 
+    //NOTE: treba doraditi ovo ne potrebno komplikovano
     useEffect(() => {
         if (inputValue === "") input.current.focus();
         //odlaganje treba da se osmisli neki alg
@@ -57,7 +57,13 @@ export default function InputStyled({
         setValue(actions.SET_INPUT_VALUE, value);
 
         //ako je prazan vracamo
-        // if (!value) return;
+        if (!value) {
+            dispatch({
+                type: actions.SET_AUTOCOMPLETE_LIST,
+                payload: { value: [] },
+            });
+            return;
+        }
         handleOnChange(value);
     };
 
@@ -69,14 +75,15 @@ export default function InputStyled({
 
     //tab autoSuggest pass value to input field
     const handleKeyDown = (event) => {
-        const inputvalue = event.target.value;
+        const currentInputValue = event.target.value;
         if (event.key === "Tab") {
             event.preventDefault();
+
             autoSuggestion && setValue(actions.SET_INPUT_VALUE, autoSuggestion);
         }
 
         //
-        else if (event.key === "Backspace" && !inputvalue) {
+        else if (event.key === "Backspace" && !currentInputValue) {
             dispatch({ type: actions.POP_TAG });
         }
 
@@ -84,7 +91,7 @@ export default function InputStyled({
         else if (event.key === "Enter") {
             dispatch({
                 type: actions.ADD_TAG,
-                payload: { tag: inputvalue },
+                payload: { tag: currentInputValue },
             });
 
             //
