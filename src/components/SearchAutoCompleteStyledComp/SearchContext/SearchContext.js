@@ -4,10 +4,16 @@ import tagList from "../../../mocks/tagsMock";
 const initialState = {
     tagList: tagList,
     dropdownList: [],
+    inputValue: "",
+    autoSuggestion: "",
+    dropdownSelector: -1,
     keyCodes: { 40: 1, 38: -1 },
     manageTagList: () => {},
     onDeleteHandler: () => {},
     toggleTagHandler: () => {},
+    moveSelector: () => {},
+    setInputValue: () => {},
+    setAutoSuggestion: () => {},
 };
 
 export const MainSearchContext = React.createContext({});

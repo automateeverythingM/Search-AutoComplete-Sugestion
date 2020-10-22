@@ -1,5 +1,5 @@
 import produce from "immer";
-import sortBy from "../Helper/sortHelper";
+import { moveSelector } from "./MoveSelector";
 import { manageTagList, onDeleteHandler } from "./TagsManager";
 
 export const actions = {
@@ -7,6 +7,10 @@ export const actions = {
     DELETE_TAG: "DELETE_TAG",
     POP_TAG: "POP_TAG",
     ADD_TAG: "ADD_TAG",
+    MOVE_SELECTOR: "MOVE_SELECTOR",
+    SET_SELECTOR: "SET_SELECTOR",
+    SET_INPUT_VALUE: "SET_INPUT_VALUE",
+    SET_AUTO_SUGGESTION: "SET_AUTO_SUGGESTION",
 };
 
 export default function searchReducer(state, action) {
@@ -22,6 +26,18 @@ export default function searchReducer(state, action) {
         } else if (action.type === actions.ADD_TAG) {
             const { tag } = action.payload;
             manageTagList(draft.tagList, tag);
+        } else if (action.type === actions.MOVE_SELECTOR) {
+            const { key } = action.payload;
+            moveSelector(draft, key);
+        } else if (action.type === actions.SET_SELECTOR) {
+            const { index } = action.payload;
+            draft.dropdownSelector = index;
+        } else if (action.type === actions.SET_INPUT_VALUE) {
+            const { value } = action.payload;
+            draft.inputValue = value;
+        } else if (action.type === actions.SET_AUTO_SUGGESTION) {
+            const { value } = action.payload;
+            draft.autoSuggestion = value;
         }
 
         // sortBy(draft.tagList, ["-selected", "-defaultTag", "label"]);

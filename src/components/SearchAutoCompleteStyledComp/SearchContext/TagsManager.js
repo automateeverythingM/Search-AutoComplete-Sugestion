@@ -24,7 +24,6 @@ export function manageTagList(state, tagName) {
             defaultTag: false,
         };
         state.push(newTag);
-        console.log(state);
     }
 }
 

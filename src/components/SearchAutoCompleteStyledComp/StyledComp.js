@@ -12,7 +12,7 @@ export const Input = styled.input`
     color: ${(props) => props.color || "#333"};
     padding: 0.2em 0;
     padding-left: 0.1em;
-    background: transparent;
+    background: ${(props) => props.backgroundColor || "transparent"};
     z-index: ${(props) => props.zIndex};
 `;
 
@@ -27,17 +27,17 @@ export const InputWrapper = styled.div`
 `;
 
 export const Wrapper = styled.div`
-    font-size: ${(props) => props.size || "1rem"};
-    box-shadow: 2px 3px 4px #ddd;
-    overflow: hidden;
-    border-right: 1px solid #ddd;
-    border-top: 1px solid #eee;
-    border-left: 1px solid #eee;
     display: flex;
     align-items: center;
     overflow: hidden;
-    border-radius: 0.2em;
+    background-color: ${(props) => props.backgroundColor || "whitesmoke"};
     padding: 0.2em 0 0.2em 0.3em;
+    font-size: ${(props) => props.size || "1rem"};
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
+    border-radius: 0.2em;
+    box-shadow: 2px 3px 4px #090b0a;
     -webkit-border-radius: 0.2em;
     -moz-border-radius: 0.2em;
     -ms-border-radius: 0.2em;
@@ -93,7 +93,7 @@ export const CloseButton = styled(Button)`
 //!!!INPUTSTYLE
 
 //!! SearchACSC
-export const Form = styled.div`
+export const RelativeContainer = styled.div`
     position: relative;
 `;
 //!! SearchACSC
@@ -112,13 +112,13 @@ export const UlDropdown = styled(Ul)`
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #eee;
     border-left: 1px solid #eee;
-    box-shadow: 1px 1px 2px #ddd;
-    border-radius: 0.2em;
+    box-shadow: 0px 0px 1px #ddd;
+    border-radius: 0 0 0.2em 0.2em;
 `;
 
 export const Li = styled.li`
     text-align: ${(props) => props.textAlign || "left"};
-    background-color: ${(props) => props.backgroundColor || "white"};
+    background-color: ${(props) => props.backgroundColor || "whitesmoke"};
     padding: 0.5em 3em;
     z-index: 999;
 
@@ -126,6 +126,13 @@ export const Li = styled.li`
         background-color: ${(props) =>
             darken(0.1, props.backgroundColor || "white")};
     }
+
+    ${(props) =>
+        props.selected &&
+        css`
+            background-color: ${(props) =>
+                darken(0.1, props.backgroundColor || "white")};
+        `}
 `;
 //!Search dropdown
 
@@ -154,22 +161,22 @@ export const LiTag = styled.li`
     border: 1px solid transparent;
     transition: all 0.1s ease-in-out;
     transition: box-shadow 0.3s ease-in-out;
-    box-shadow: 1px 0 3px #999;
+    box-shadow: 1px 0 3px 1px #090b0a;
     color: #333;
-    background-color: white;
+    background-color: whitesmoke;
 
     &:hover {
-        box-shadow: 0px 0px 3px #999;
+        box-shadow: 0px 0px 4px 2px #090b0a;
     }
     &:active {
         background-color: ${(props) => props.boxShadowColorActive};
     }
 
     &:hover ${CloseTag} {
-        box-shadow: 0px 1px 2px #aaa;
+        box-shadow: 0px 1px 2px #555;
     }
     &:active ${CloseTag} {
-        box-shadow: 0 -1px 1px #999;
+        box-shadow: 0 -1px 1px #555;
     }
 `;
 
@@ -210,3 +217,19 @@ export const TagLabel = styled.div`
             }
         `} */
 //!
+
+export const Jumbotron = styled.div`
+    padding: 2em 2em;
+    width: 80%;
+    border-radius: 1em;
+    background: #1c2321;
+`;
+
+export const TitleMsg = styled.h1`
+    text-align: center;
+    color: whitesmoke;
+    font-size: 4em;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1em;
+`;

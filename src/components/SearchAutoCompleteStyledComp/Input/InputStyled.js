@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useContext } from "react";
 import { useState } from "react";
-import { BiSearchAlt } from "react-icons/bi";
 import { MainSearchContext } from "../SearchContext/SearchContext";
 import { actions } from "../SearchContext/SearchReducer";
 
@@ -18,6 +17,7 @@ export default function InputStyled({
     //autosugustion koji se dopunjuje
     const [autoSuggestion, setAutoSuggestion] = useState("");
     const { dispatch } = useContext(MainSearchContext);
+    const { state: { inputValue, autoSuggestion }, dispatch } = useContext(MainSearchContext)}
     const input = useRef();
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
@@ -37,7 +37,7 @@ export default function InputStyled({
             else {
                 setAutoSuggestion(appendSuggestion(inputValue, name));
             }
-        }, 50);
+        }, 0);
 
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,7 +53,6 @@ export default function InputStyled({
 
         //ako je prazan vracamo
         // if (!value) return;
-
         handleOnChange(value);
     };
 
@@ -69,7 +68,7 @@ export default function InputStyled({
         if (event.key === "Tab") {
             event.preventDefault();
             autoSuggestion && setInputValue(autoSuggestion);
-        } else if (event.key === "Backspace") {
+        } else if (event.key === "Backspace" && !event.target.value) {
             dispatch({ type: actions.POP_TAG });
         } else if (event.key === "Enter") {
             const value = event.target.value;
@@ -80,6 +79,18 @@ export default function InputStyled({
 
             setInputValue("");
             setAutoSuggestion("");
+        } else if (event.key === "ArrowDown") {
+            event.preventDefault();
+            dispatch({
+                type: actions.MOVE_SELECTOR,
+                payload: { key: event.key },
+            });
+        } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            dispatch({
+                type: actions.MOVE_SELECTOR,
+                payload: { key: event.key },
+            });
         }
     };
     return (

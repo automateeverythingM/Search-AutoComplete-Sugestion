@@ -3,7 +3,7 @@ import AutoCompleteStyled from "./AutoComplete/AutoCompleteStyled";
 import InputStyled from "./Input/InputStyled";
 import mockStates from "../../mocks/inputAutoComplete";
 import { useState } from "react";
-import { Form } from "./StyledComp";
+import { RelativeContainer } from "./StyledComp";
 
 export default function SearchACSC() {
     const [autocompleteList, setAutocompleteList] = useState([]);
@@ -34,14 +34,14 @@ export default function SearchACSC() {
     };
 
     return (
-        <Form>
+        <RelativeContainer>
             <InputStyled
-                size={"2em"}
+                size={"3em"}
                 suggestedWord={suggestionWords}
                 handleOnChange={onChange}
                 dropDownStyle={autocompleteList.length}
             />
             {dropdown && <AutoCompleteStyled data={autocompleteList} />}
-        </Form>
+        </RelativeContainer>
     );
 }

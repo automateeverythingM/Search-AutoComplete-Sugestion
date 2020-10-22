@@ -7,12 +7,11 @@ export default function TagUl() {
     const {
         state: { tagList },
     } = useContext(MainSearchContext);
-    console.log("TagUl -> tagList", tagList);
+    
     return (
         <div>
             <Ul>
                 {tagList.map((tag) => {
-                    console.log(tag);
                     return (
                         <Tag
                             key={tag.id}

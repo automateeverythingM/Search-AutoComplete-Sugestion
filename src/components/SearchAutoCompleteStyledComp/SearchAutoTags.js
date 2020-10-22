@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import SearchACSC from "./SearchACSC";
-import { MainSearchContext } from "./SearchContext/SearchContext";
+import { Jumbotron, TitleMsg } from "./StyledComp";
 import TagUl from "./TagInput/TagUl";
 
 export default function SearchAutoTags() {
-    const { tagList } = useContext(MainSearchContext);
     return (
-        <div>
+        <Jumbotron>
             <TagUl />
             <SearchACSC />
-        </div>
+        </Jumbotron>
     );
 }
