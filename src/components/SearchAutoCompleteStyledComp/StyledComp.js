@@ -148,6 +148,12 @@ export const CloseTag = styled.label`
     padding: 0 5px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    &:hover {
+        box-shadow: 0px 1px 2px #555;
+    }
+    &:active {
+        box-shadow: 0 -1px 1px #555;
+    }
 `;
 export const LiTag = styled.li`
     display: inline-flex;
@@ -166,17 +172,7 @@ export const LiTag = styled.li`
     background-color: whitesmoke;
 
     &:hover {
-        box-shadow: 0px 0px 4px 2px #090b0a;
-    }
-    &:active {
-        background-color: ${(props) => props.boxShadowColorActive};
-    }
-
-    &:hover ${CloseTag} {
-        box-shadow: 0px 1px 2px #555;
-    }
-    &:active ${CloseTag} {
-        box-shadow: 0 -1px 1px #555;
+        box-shadow: 0px 0px 2px 3px #090b0a;
     }
 `;
 
@@ -219,9 +215,10 @@ export const TagLabel = styled.div`
 //!
 
 export const Jumbotron = styled.div`
-    padding: 2em 2em;
+    position: relative;
     width: 80%;
     border-radius: 1em;
+    padding: 2em;
     background: #1c2321;
 `;
 
@@ -232,4 +229,21 @@ export const TitleMsg = styled.h1`
     padding: 0;
     margin: 0;
     margin-bottom: 1em;
+`;
+
+export const Banner = styled.div`
+    text-align: center;
+    font-size: 3em;
+    color: whitesmoke;
+    margin-bottom: 1em;
+    font-weight: bold;
+    text-shadow: 5px 5px 5px black;
+`;
+
+export const SpanText = styled.span`
+    display: inline-block;
+    color: whitesmoke;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 15em;
 `;

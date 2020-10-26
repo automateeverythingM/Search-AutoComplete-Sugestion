@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import { MainSearchContext } from "../SearchContext/SearchContext";
 import { actions } from "../SearchContext/SearchReducer";
@@ -11,6 +11,8 @@ export default function InputStyled({
     dropDownStyle,
 }) {
     //local state for input
+    const [caseSensitiveFill, setCaseSensitive] = useState("");
+
     //autosugustion koji se dopunjuje
     const {
         state: { inputValue, autoSuggestion },
@@ -21,12 +23,14 @@ export default function InputStyled({
     //FIXME: treba da prepravim ovo i da napravim poseban metod
     const setValue = (action, value) =>
         dispatch({ type: action, payload: { value } });
+
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
         const toAppend = suggestion.slice(currentValue.length);
         currentValue += toAppend;
         return currentValue;
     };
+
     //NOTE: treba doraditi ovo ne potrebno komplikovano
     useEffect(() => {
         if (inputValue === "") input.current.focus();
@@ -34,6 +38,7 @@ export default function InputStyled({
         let timer = setTimeout(() => {
             //saljemo vredonst na osnovu koje cemo dobiti suggestion
             const name = suggestedWord(inputValue);
+
             if (name === autoSuggestion) return;
             else if (!name) setValue(actions.SET_AUTO_SUGGESTION, "");
             else {
@@ -41,6 +46,7 @@ export default function InputStyled({
                     actions.SET_AUTO_SUGGESTION,
                     appendSuggestion(inputValue, name)
                 );
+                setCaseSensitive(name);
             }
         }, 50);
 
@@ -53,23 +59,26 @@ export default function InputStyled({
         //uzimamo vrednos inputa
         const value = event.target.value;
 
-        //setujemo value na oba inputa
+        //setujemo value
         setValue(actions.SET_INPUT_VALUE, value);
 
-        //ako je prazan vracamo
+        //ako je prazan vracamo i cistimo listu ako je ostalo nesto
         if (!value) {
+            //NOTE: treba probati sa proverom pre setovnja na prazno
             dispatch({
                 type: actions.SET_AUTOCOMPLETE_LIST,
                 payload: { value: [] },
             });
             return;
         }
+        // spoljasnja promena
         handleOnChange(value);
     };
 
     //clean input value
     const handleClearInput = (event) => {
         event.preventDefault();
+        //mozda nije dobra ideja ne znam da li dovoljno jasno sta se desava
         setValue(actions.CLEAR_INPUT);
     };
 
@@ -78,16 +87,19 @@ export default function InputStyled({
         const currentInputValue = event.target.value;
         if (event.key === "Tab") {
             event.preventDefault();
+            //ako ima vredonst setujemo je
 
-            autoSuggestion && setValue(actions.SET_INPUT_VALUE, autoSuggestion);
+            autoSuggestion &&
+                setValue(actions.SET_ALL_INPUTS, caseSensitiveFill);
         }
 
         //
         else if (event.key === "Backspace" && !currentInputValue) {
+            //brisemo zadnje dodat tag
             dispatch({ type: actions.POP_TAG });
         }
 
-        //
+        //add tag and reset all
         else if (event.key === "Enter") {
             dispatch({
                 type: actions.ADD_TAG,
@@ -98,7 +110,7 @@ export default function InputStyled({
             setValue(actions.RESET_STATE);
         }
 
-        //
+        //pomera selektor
         else if (event.key === "ArrowDown") {
             event.preventDefault();
             dispatch({
@@ -116,6 +128,8 @@ export default function InputStyled({
             });
         }
     };
+
+    //
     return (
         <Wrapper size={size} dropDownStyle={dropDownStyle}>
             {prependIcon}

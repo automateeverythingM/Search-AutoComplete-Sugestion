@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import reducer from "./SearchReducer";
-import tagList from "../../../mocks/tagsMock";
+import tagList from "../mocks/tagsMock";
 
 //FIXME: treba da prepravim keycodes i da ih upotrebim
 const initialState = {

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import AutoCompleteStyled from "./AutoComplete/AutoCompleteStyled";
 import InputStyled from "./Input/InputStyled";
-import mockStates from "../../mocks/inputAutoComplete";
+import mockStates from "./mocks/inputAutoComplete";
 import { RelativeContainer } from "./StyledComp";
 import { MainSearchContext } from "./SearchContext/SearchContext";
 import { actions } from "./SearchContext/SearchReducer";
