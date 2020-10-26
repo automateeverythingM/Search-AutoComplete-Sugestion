@@ -1,5 +1,5 @@
 import produce from "immer";
-import { moveSelector } from "./MoveSelector";
+import moveSelector from "./MoveSelector";
 import { manageTagList, onDeleteHandler } from "./TagsManager";
 
 export const actions = {
@@ -32,11 +32,6 @@ export default function searchReducer(state, action) {
         //
         else if (action.type === actions.POP_TAG) {
             draft.tagList.pop();
-        }
-        //
-        else if (action.type === actions.ADD_TAG) {
-            const { tag } = action.payload;
-            manageTagList(draft.tagList, tag);
         }
         //!SELECTOR ON AUTOCOMPLETE
         else if (action.type === actions.MOVE_SELECTOR) {

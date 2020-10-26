@@ -10,9 +10,7 @@ import SeaechAppHolder from "./components/SearchAutoCompleteStyledComp/SeaechApp
 function App() {
     return (
         <div className="App">
-            <br />
             <SeaechAppHolder />
-            <h3>Hello</h3>
         </div>
     );
 }

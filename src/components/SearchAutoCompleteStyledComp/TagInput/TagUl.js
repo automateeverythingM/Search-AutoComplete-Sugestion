@@ -1,13 +1,8 @@
 import React from "react";
 import { Ul } from "../StyledComp";
 import Tag from "./Tag";
-import { useContext } from "react";
-import { MainSearchContext } from "../SearchContext/SearchContext";
-export default function TagUl() {
-    const {
-        state: { tagList },
-    } = useContext(MainSearchContext);
-    
+import { connect } from "react-redux";
+function TagUl({ tagList }) {
     return (
         <div>
             <Ul>
@@ -19,7 +14,6 @@ export default function TagUl() {
                             label={tag.label}
                             backgroundColor={tag.backgroundColor}
                             selectedTag={tag.selected}
-                            defaultTag={tag.defaultTag}
                         />
                     );
                 })}
@@ -27,3 +21,12 @@ export default function TagUl() {
         </div>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        tagList: state.tagList,
+    };
+};
+
+
+export default connect(mapStateToProps)(TagUl);
