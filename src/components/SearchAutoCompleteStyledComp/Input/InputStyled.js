@@ -87,7 +87,7 @@ function InputStyled({
     //clean input value
     const handleClearInput = (event) => {
         event.preventDefault();
-        clearAllInputs();
+        resetState();
     };
 
     //tab autoSuggest pass value to input field

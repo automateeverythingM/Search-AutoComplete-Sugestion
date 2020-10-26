@@ -101,7 +101,6 @@ export default function reducer(state = initialState, action) {
                 break;
             case MOVE_SELECTOR:
                 const { key } = payload;
-                console.log("reducer -> key", key);
                 menageSelector(draft, key);
                 break;
             case SET_SELECTOR:

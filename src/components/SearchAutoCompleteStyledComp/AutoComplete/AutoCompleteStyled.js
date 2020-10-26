@@ -7,16 +7,19 @@ import {
 } from "../store/MainSearch/mainSearchReducer";
 import { Li, UlDropdown } from "../StyledComp";
 
-function AutoCompleteStyled({ autocompleteList: data, dropdownSelector }) {
-    console.log("AutoCompleteStyled -> dropdownSelector", dropdownSelector);
+function AutoCompleteStyled({
+    autocompleteList: data,
+    dropdownSelector,
+    setInputValue,
+    resetState,
+}) {
     //resetujemo state zbog key pa posle setujemo input
     //NOTE: trebalo bi da  napisem jedan metod za oba
     function onClickHandler(e) {
         resetState();
         setInputValue(e.target.innerText);
+        console.log("onClickHandler -> e.target.innerText", e.target.innerText);
     }
-
-    console.log(dropdownSelector);
 
     return (
         <UlDropdown
