@@ -42,6 +42,11 @@ export const Wrapper = styled.div`
     -moz-border-radius: 0.2em;
     -ms-border-radius: 0.2em;
     -o-border-radius: 0.2em;
+    ${(props) =>
+        props.tagLimitReached &&
+        css`
+            border: 0.1em solid darkred;
+        `}
 
     ${(props) =>
         props.dropDownStyle &&

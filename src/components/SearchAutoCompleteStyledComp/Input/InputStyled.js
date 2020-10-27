@@ -22,8 +22,9 @@ function InputStyled({
     dropDownStyle,
     inputValue,
     autoSuggestion,
+    tagLimit,
+    tagLimitReached,
     addTag,
-    clearAllInputs,
     popTag,
     resetState,
     setAllInputs,
@@ -34,11 +35,8 @@ function InputStyled({
 }) {
     //local state for input
     const [caseSensitiveFill, setCaseSensitive] = useState("");
-
-    //autosugustion koji se dopunjuje
-
     const input = useRef();
-
+    const timeout = useRef();
     //appedndujemo na base word suggestion
     const appendSuggestion = (currentValue, suggestion) => {
         const toAppend = suggestion.slice(currentValue.length);
@@ -46,25 +44,37 @@ function InputStyled({
         return currentValue;
     };
 
+    const setTagLimitUi = () => {
+        resetState();
+        setInputValue(`Tag Limit is ${tagLimit}`);
+    };
+
+    const autoSuggestionManager = (value) => {
+        if (tagLimitReached) return;
+        const name = suggestedWord(value);
+
+        if (name === autoSuggestion) return;
+        else if (!name) setAutoSuggestion("");
+        else {
+            setAutoSuggestion(appendSuggestion(value, name));
+            setCaseSensitive(name);
+        }
+    };
+
     //NOTE: treba doraditi ovo ne potrebno komplikovano
     useEffect(() => {
         if (inputValue === "") input.current.focus();
-        //odlaganje treba da se osmisli neki alg
-        let timer = setTimeout(() => {
-            //saljemo vredonst na osnovu koje cemo dobiti suggestion
-            const name = suggestedWord(inputValue);
-
-            if (name === autoSuggestion) return;
-            else if (!name) setAutoSuggestion("");
-            else {
-                setAutoSuggestion(appendSuggestion(inputValue, name));
-                setCaseSensitive(name);
-            }
-        }, 50);
-
-        return () => clearTimeout(timer);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     });
+
+    useEffect(() => {
+        if (tagLimitReached) setTagLimitUi();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tagLimitReached]);
+
+    useEffect(() => {
+        if (inputValue.trim()) handleOnChange(inputValue);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inputValue]);
 
     // set value and call call users handler
     const handleOnChangeInput = (event) => {
@@ -74,6 +84,8 @@ function InputStyled({
         //setujemo value
         setInputValue(value);
 
+        autoSuggestionManager(value);
+
         //ako je prazan vracamo i cistimo listu ako je ostalo nesto
         if (!value) {
             //NOTE: treba probati sa proverom pre setovnja na prazno
@@ -81,7 +93,9 @@ function InputStyled({
             return;
         }
         // spoljasnja promena
-        handleOnChange(value);
+        //? Mozda ovde mozda u useEffect
+
+        // handleOnChange(value);
     };
 
     //clean input value
@@ -96,20 +110,29 @@ function InputStyled({
         if (event.key === "Tab") {
             event.preventDefault();
             //ako ima vredonst setujemo je
-
             autoSuggestion && setAllInputs(caseSensitiveFill);
         }
 
-        //
-        else if (event.key === "Backspace" && !currentInputValue) {
+        //NOTE: sredi ovo
+        else if (
+            event.key === "Backspace" &&
+            (tagLimitReached || !currentInputValue)
+        ) {
             //brisemo zadnje dodat tag
+            if (tagLimitReached && currentInputValue) {
+                setAllInputs("");
+                return;
+            }
+            //NOTE: previse brzo brise tagove ako se zadrzi key mozda neki timeout
             popTag();
         }
 
         //add tag and reset all
         else if (event.key === "Enter") {
+            //proveravamo da li ima tag limit
+            if (tagLimitReached) return;
+
             addTag(currentInputValue);
-            //
             resetState();
         }
 
@@ -129,7 +152,11 @@ function InputStyled({
     //
 
     return (
-        <Wrapper size={size} dropDownStyle={dropDownStyle}>
+        <Wrapper
+            size={size}
+            dropDownStyle={dropDownStyle}
+            tagLimitReached={tagLimitReached}
+        >
             {prependIcon}
             <InputWrapper>
                 <Input
@@ -165,6 +192,9 @@ const mapStateToProps = (state) => {
     return {
         inputValue: state.inputValue,
         autoSuggestion: state.autoSuggestion,
+        tagLimit: state.tagLimit,
+        tagLimitReached:
+            state.tagLimit && state.tagLimit <= state.tagList.length,
     };
 };
 

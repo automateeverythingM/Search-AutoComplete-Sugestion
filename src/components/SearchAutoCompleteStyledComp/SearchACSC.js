@@ -6,7 +6,11 @@ import { RelativeContainer } from "./StyledComp";
 import { connect } from "react-redux";
 import { setAutocompleteList } from "./store/MainSearch/mainSearchReducer";
 
-function SearchACSC({ autocompleteList, setAutocompleteList }) {
+function SearchACSC({
+    autocompleteList,
+    setAutocompleteList,
+    tagLimitReached,
+}) {
     //Proveravamo da li je lista prazna
     const dropdown = !!autocompleteList.length;
 
@@ -23,6 +27,7 @@ function SearchACSC({ autocompleteList, setAutocompleteList }) {
 
     //trazimo listu iz api rute
     const onChange = (inputValue) => {
+        if (tagLimitReached) return;
         fetch("https://api.npoint.io/b12a6e7e85e8e63d54a2")
             .then((res) => res.json())
             .then((data) => {
@@ -54,6 +59,8 @@ function SearchACSC({ autocompleteList, setAutocompleteList }) {
 const mapStateToProps = (state) => {
     return {
         autocompleteList: state.autocompleteList,
+        tagLimitReached:
+            state.tagLimit && state.tagLimit <= state.tagList.length,
     };
 };
 
