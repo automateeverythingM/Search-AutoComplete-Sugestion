@@ -13,6 +13,7 @@ export default function moveSelector(state, key) {
             state.autoSuggestion = state.tempInputValue;
         } else {
             state.inputValue = state.autocompleteList[current].name;
+            state.autoSuggestion = "";
         }
     }
 }
