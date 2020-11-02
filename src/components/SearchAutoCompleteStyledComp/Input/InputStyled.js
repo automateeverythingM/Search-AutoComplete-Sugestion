@@ -13,7 +13,6 @@ import {
 } from "../store/MainSearch/mainSearchReducer";
 import { CloseButton, Input, InputWrapper, Wrapper } from "../StyledComp";
 
-//
 function InputStyled({
     size,
     prependIcon,
@@ -35,9 +34,11 @@ function InputStyled({
 }) {
     //local state for input
     const [caseSensitiveFill, setCaseSensitive] = useState("");
+    const [backspaceDelay, setBackspaceDelay] = useState(0);
     const input = useRef();
-    const timeout = useRef();
+    let timer = useRef();
     //appedndujemo na base word suggestion
+
     const appendSuggestion = (currentValue, suggestion) => {
         const toAppend = suggestion.slice(currentValue.length);
         currentValue += toAppend;
@@ -78,24 +79,17 @@ function InputStyled({
 
     // set value and call call users handler
     const handleOnChangeInput = (event) => {
-        //uzimamo vrednos inputa
         const value = event.target.value;
 
-        //setujemo value
         setInputValue(value);
-
         autoSuggestionManager(value);
+        setBackspaceDelay(0);
 
         //ako je prazan vracamo i cistimo listu ako je ostalo nesto
         if (!value) {
-            //NOTE: treba probati sa proverom pre setovnja na prazno
             setAutocompleteList([]);
             return;
         }
-        // spoljasnja promena
-        //? Mozda ovde mozda u useEffect
-
-        // handleOnChange(value);
     };
 
     //clean input value
@@ -113,7 +107,7 @@ function InputStyled({
             autoSuggestion && setAllInputs(caseSensitiveFill);
         }
 
-        //NOTE: sredi ovo
+        //
         else if (
             event.key === "Backspace" &&
             (tagLimitReached || !currentInputValue)
@@ -123,8 +117,16 @@ function InputStyled({
                 setAllInputs("");
                 return;
             }
+
             //NOTE: previse brzo brise tagove ako se zadrzi key mozda neki timeout
-            popTag();
+            if (!backspaceDelay) {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    setBackspaceDelay(1);
+                }, 500);
+            } else {
+                popTag();
+            }
         }
 
         //add tag and reset all
@@ -207,7 +209,7 @@ const mapDispatchToProps = (dispatch) => {
         setAutocompleteList: (value) => dispatch(setAutocompleteList(value)),
         clearAllInputs: (value) => dispatch(clearAllInputs()),
         setAllInputs: (value) => dispatch(setAllInputs(value)),
-        popTag: (value) => dispatch(popTag()),
+        popTag: () => dispatch(popTag()),
         addTag: (value) => dispatch(addTag(value)),
         resetState: (value) => dispatch(resetState()),
         moveSelector: (value) => dispatch(moveSelector(value)),

@@ -18,7 +18,6 @@ function AutoCompleteStyled({
     function onClickHandler(e) {
         resetState();
         setInputValue(e.target.innerText);
-        console.log("onClickHandler -> e.target.innerText", e.target.innerText);
     }
 
     return (

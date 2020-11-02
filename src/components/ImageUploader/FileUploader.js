@@ -1,19 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import classes from "./style.module.css";
-export default function ImageUploaderWithPreview({ onChange, buttonText }) {
-    const [avatarImg, setAvatarImg] = useState();
-
+export default function FileUploader({ onChange, buttonText, previewImage }) {
     let inputRef;
-
-    function onChangeHandler(event) {
-        const reader = new FileReader();
-        reader.onload = () => {
-            if (reader.readyState === 2) {
-                setAvatarImg(reader.result);
-            }
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
 
     function triggerInput() {
         inputRef.click();
@@ -21,8 +9,15 @@ export default function ImageUploaderWithPreview({ onChange, buttonText }) {
 
     function uploadImage(event) {
         const file = event.target.files[0];
-        console.log("uploadImage -> file", file);
+        if (!file) return;
         onChange(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+            if (reader.readyState === 2) {
+                previewImage(reader.result);
+            }
+        };
+        reader.readAsDataURL(event.target.files[0]);
     }
 
     return (
@@ -44,7 +39,8 @@ export default function ImageUploaderWithPreview({ onChange, buttonText }) {
     );
 }
 
-ImageUploaderWithPreview.defaultProps = {
+FileUploader.defaultProps = {
     buttonText: "Edit",
     onChange: () => {},
+    previewImage: () => {},
 };
