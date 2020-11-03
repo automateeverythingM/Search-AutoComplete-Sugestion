@@ -4,12 +4,17 @@ import InputStyled from "./Input/InputStyled";
 import mockStates from "./mocks/inputAutoComplete";
 import { RelativeContainer } from "./StyledComp";
 import { connect } from "react-redux";
-import { setAutocompleteList } from "./store/MainSearch/mainSearchReducer";
+import {
+    resetState,
+    setAutocompleteList,
+} from "./store/MainSearch/mainSearchReducer";
+import { debounce } from "lodash";
 
 function SearchACSC({
     autocompleteList,
     setAutocompleteList,
     tagLimitReached,
+    reset,
 }) {
     //Proveravamo da li je lista prazna
     const dropdown = !!autocompleteList.length;
@@ -25,22 +30,42 @@ function SearchACSC({
         return word ? word.name : null;
     };
 
+    const Flist = debounce(
+        function fetchList(inputValue) {
+            if (!inputValue) {
+                setAutocompleteList([]);
+                return;
+            }
+            fetch("https://api.npoint.io/b12a6e7e85e8e63d54a2")
+                .then((res) => res.json())
+                .then((data) => {
+                    const result = data.filter((item) => {
+                        return item.name
+                            .toLowerCase()
+                            .startsWith(inputValue.toLowerCase());
+                    });
+
+                    const finished = result.slice(0, 10);
+
+                    setAutocompleteList(finished);
+                });
+        },
+        100,
+        {
+            leading: false,
+            trailing: true,
+        }
+    );
     //trazimo listu iz api rute
     const onChange = (inputValue) => {
-        if (tagLimitReached) return;
-        fetch("https://api.npoint.io/b12a6e7e85e8e63d54a2")
-            .then((res) => res.json())
-            .then((data) => {
-                const result = data.filter((item) => {
-                    return item.name
-                        .toLowerCase()
-                        .startsWith(inputValue.toLowerCase());
-                });
-
-                const finished = result.slice(0, 10);
-
-                setAutocompleteList(finished);
-            });
+        if (tagLimitReached) {
+            setAutocompleteList([]);
+            return;
+        }
+        if (!inputValue) {
+            Flist.cancel();
+        }
+        Flist(inputValue);
     };
 
     return (
@@ -68,6 +93,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setAutocompleteList: (value) => {
             dispatch(setAutocompleteList(value));
+        },
+        reset: () => {
+            dispatch(resetState());
         },
     };
 };

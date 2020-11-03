@@ -72,7 +72,6 @@ const initialState = {
     inputValue: "",
     autoSuggestion: "",
     dropdownSelector: -1,
-    tagLimit: 8,
     keyCodes: { 40: 1, 38: -1 },
     manageTagList: () => {},
     onDeleteHandler: () => {},
