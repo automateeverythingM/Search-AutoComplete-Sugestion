@@ -14,7 +14,6 @@ function SearchACSC({
     autocompleteList,
     setAutocompleteList,
     tagLimitReached,
-    reset,
 }) {
     //Proveravamo da li je lista prazna
     const dropdown = !!autocompleteList.length;

@@ -25,7 +25,6 @@ function InputStyled({
     popTag,
     resetState,
     setAllInputs,
-    setAutocompleteList,
     setAutoSuggestion,
     setInputValue,
     moveSelector,
@@ -33,8 +32,9 @@ function InputStyled({
     //local state for input
     const [caseSensitiveFill, setCaseSensitive] = useState("");
     const [backspaceDelay, setBackspaceDelay] = useState(true);
+    const popinTags = debounce(popTag, 300);
     const input = useRef();
-    let timer = useRef();
+    let timer = useRef(null);
     //appedndujemo na base word suggestion
 
     const appendSuggestion = (currentValue, suggestion) => {
@@ -53,7 +53,6 @@ function InputStyled({
             setCaseSensitive(name);
         }
     };
-    const delayDelete = debounce(popTag, 100);
 
     //NOTE: treba doraditi ovo ne potrebno komplikovano
     useEffect(() => {
@@ -71,7 +70,7 @@ function InputStyled({
 
         setInputValue(value);
         autoSuggestionManager(value);
-        setBackspaceDelay(true);
+        setBackspaceDelay(false);
 
         //ako je prazan vracamo i cistimo listu ako je ostalo nesto
         // if (!value) {
@@ -95,24 +94,16 @@ function InputStyled({
             //ako ima vredonst setujemo je
             autoSuggestion && setAllInputs(caseSensitiveFill);
         }
-
         //
         else if (event.key === "Backspace" && !currentInputValue) {
             // NOTE: previse brzo brise tagove ako se zadrzi key, mozda neki timeout
+
             if (backspaceDelay) {
-                timer.current = setTimeout(() => {
-                    setBackspaceDelay(false);
-                }, 500);
-                console.log("timer.current -> timer.current", timer.current);
-            } else if (!backspaceDelay) {
                 popTag();
             }
         }
-
         //add tag and reset all
         else if (event.key === "Enter") {
-            //proveravamo da li ima tag limit
-
             addTag(currentInputValue);
             resetState();
         }
@@ -130,6 +121,15 @@ function InputStyled({
         }
     };
 
+    function handleKeyUp(event) {
+        const currentInputValue = event.target.value;
+
+        if (event.key === "Backspace" && !currentInputValue) {
+            // NOTE: previse brzo brise tagove ako se zadrzi key, mozda neki timeout
+            setBackspaceDelay(true);
+        }
+    }
+
     //
 
     return (
@@ -142,6 +142,7 @@ function InputStyled({
                     value={inputValue}
                     onChange={handleOnChangeInput}
                     onKeyDown={handleKeyDown}
+                    onKeyUp={handleKeyUp}
                     zIndex="50"
                     ref={input}
                 />
