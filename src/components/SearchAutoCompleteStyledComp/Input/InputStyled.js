@@ -21,6 +21,7 @@ function InputStyled({
     dropDownStyle,
     inputValue,
     autoSuggestion,
+    setAutocompleteList,
     addTag,
     popTag,
     resetState,
@@ -73,10 +74,10 @@ function InputStyled({
         setBackspaceDelay(false);
 
         //ako je prazan vracamo i cistimo listu ako je ostalo nesto
-        // if (!value) {
-        //     setAutocompleteList([]);
-        //     return;
-        // }
+        if (!value) {
+            setAutocompleteList([]);
+            return;
+        }
         handleOnChange(value);
     };
 
@@ -97,7 +98,6 @@ function InputStyled({
         //
         else if (event.key === "Backspace" && !currentInputValue) {
             // NOTE: previse brzo brise tagove ako se zadrzi key, mozda neki timeout
-
             if (backspaceDelay) {
                 popTag();
             }
@@ -118,6 +118,11 @@ function InputStyled({
         else if (event.key === "ArrowUp") {
             event.preventDefault();
             moveSelector(event.key);
+        }
+        //
+        else if (event.key === "Escape") {
+            console.log("handleKeyDown -> event.key", event.key);
+            setAutocompleteList([]);
         }
     };
 
@@ -153,6 +158,7 @@ function InputStyled({
                     value={autoSuggestion}
                     zIndex="20"
                     color="#d4d4d4"
+                    autoFocus
                 />
             </InputWrapper>
             <CloseButton
