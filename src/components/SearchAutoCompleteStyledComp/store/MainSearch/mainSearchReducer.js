@@ -3,7 +3,7 @@ import tagList from "../../mocks/tagsMock";
 import { onDeleteHandler, manageTagList } from "./logic/tags";
 import menageSelector from "./logic/moveSelector";
 import axios from "axios";
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, put } from "redux-saga/effects";
 //! ****************************************************************//
 //!ACTIONTYPES CONSTANTS
 const DELETE_TAG = "DELETE_TAG";
@@ -18,6 +18,7 @@ const CLEAR_INPUT = "CLEAR_INPUT";
 const RESET_STATE = "RESET_STATE";
 const SET_ALL_INPUTS = "SET_ALL_INPUTS";
 const FETCH_AUTOCOMPLETE_LIST = "FETCH_AUTOCOMPLETE_LIST";
+const CLEAR_AUTOCOMPLETE_LIST = "CLEAR_AUTOCOMPLETE_LIST";
 
 //! ****************************************************************//
 //!ACTIONS
@@ -37,8 +38,6 @@ function* getAutoCompleteList(action) {
 
     yield put(setAutocompleteList(finished));
 }
-
-export function* fetchList() {}
 
 export function* loadAutoCompleteList() {
     yield takeLatest("FETCH_AUTOCOMPLETE_LIST", getAutoCompleteList);
@@ -82,6 +81,10 @@ export function clearAllInputs() {
 
 export function setAutocompleteList(value) {
     return { type: SET_AUTOCOMPLETE_LIST, payload: { value } };
+}
+
+export function clearAutocompleteList() {
+    return { type: CLEAR_AUTOCOMPLETE_LIST, payload: {} };
 }
 
 export function resetState() {
@@ -142,6 +145,11 @@ export default function reducer(state = initialState, action) {
                 break;
             case SET_AUTOCOMPLETE_LIST:
                 draft.autocompleteList = payload.value;
+                draft.dropdownSelector = -1;
+                draft.tempInputValue = "";
+                break;
+            case CLEAR_AUTOCOMPLETE_LIST:
+                draft.autocompleteList = [];
                 break;
             case SET_INPUT_VALUE:
                 draft.inputValue = payload.value;
@@ -151,6 +159,7 @@ export default function reducer(state = initialState, action) {
                 draft.inputValue = "";
                 draft.autocompleteList = [];
                 draft.dropdownSelector = -1;
+                draft.tempInputValue = "";
                 break;
             case SET_ALL_INPUTS:
                 draft.autoSuggestion = payload.value;
@@ -160,6 +169,7 @@ export default function reducer(state = initialState, action) {
                 draft.autoSuggestion = "";
                 draft.inputValue = "";
                 draft.dropdownSelector = -1;
+                draft.tempInputValue = "";
 
                 break;
 

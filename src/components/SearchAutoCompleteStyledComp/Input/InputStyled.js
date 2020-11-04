@@ -6,10 +6,10 @@ import {
     popTag,
     resetState,
     setAllInputs,
-    setAutocompleteList,
     setAutoSuggestion,
     setInputValue,
     moveSelector,
+    clearAutocompleteList,
 } from "../store/MainSearch/mainSearchReducer";
 import { CloseButton, Input, InputWrapper, Wrapper } from "../StyledComp";
 function InputStyled({
@@ -20,7 +20,7 @@ function InputStyled({
     showDropdown,
     inputValue,
     autoSuggestion,
-    setAutocompleteList,
+    clearAutocompleteList,
     addTag,
     popTag,
     resetState,
@@ -85,13 +85,15 @@ function InputStyled({
         const currentInputValue = event.target.value;
         if (event.key === "Tab") {
             event.preventDefault();
+
+            // if (dropdownSelector !== -1) return;
             //ako ima vredonst setujemo je
             autoSuggestion && setAllInputs(caseSensitiveFill);
         }
         //
         else if (event.key === "Backspace" && !currentInputValue) {
             // NOTE: previse brzo brise tagove ako se zadrzi key, mozda neki timeout
-            
+
             if (backspaceDelay) {
                 popTag();
             }
@@ -116,7 +118,7 @@ function InputStyled({
         //
         else if (event.key === "Escape") {
             console.log("handleKeyDown -> event.key", event.key);
-            setAutocompleteList([]);
+            clearAutocompleteList();
         }
     };
 
@@ -179,7 +181,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setAutoSuggestion(value));
         },
         setInputValue: (value) => dispatch(setInputValue(value)),
-        setAutocompleteList: (value) => dispatch(setAutocompleteList(value)),
+        clearAutocompleteList: () => dispatch(clearAutocompleteList()),
         clearAllInputs: (value) => dispatch(clearAllInputs()),
         setAllInputs: (value) => dispatch(setAllInputs(value)),
         popTag: () => dispatch(popTag()),
