@@ -12,13 +12,12 @@ import {
     moveSelector,
 } from "../store/MainSearch/mainSearchReducer";
 import { CloseButton, Input, InputWrapper, Wrapper } from "../StyledComp";
-import { debounce, throttle } from "loadsh";
 function InputStyled({
     size,
     prependIcon,
     handleOnChange,
     suggestedWord,
-    dropDownStyle,
+    showDropdown,
     inputValue,
     autoSuggestion,
     setAutocompleteList,
@@ -33,9 +32,7 @@ function InputStyled({
     //local state for input
     const [caseSensitiveFill, setCaseSensitive] = useState("");
     const [backspaceDelay, setBackspaceDelay] = useState(true);
-    const popinTags = debounce(popTag, 300);
     const input = useRef();
-    let timer = useRef(null);
     //appedndujemo na base word suggestion
 
     const appendSuggestion = (currentValue, suggestion) => {
@@ -71,14 +68,10 @@ function InputStyled({
 
         setInputValue(value);
         autoSuggestionManager(value);
-        setBackspaceDelay(false);
 
-        //ako je prazan vracamo i cistimo listu ako je ostalo nesto
-        if (!value) {
-            setAutocompleteList([]);
-            return;
-        }
-        handleOnChange(value);
+        if (value.trim()) handleOnChange(value);
+
+        setBackspaceDelay(false);
     };
 
     //clean input value
@@ -98,6 +91,7 @@ function InputStyled({
         //
         else if (event.key === "Backspace" && !currentInputValue) {
             // NOTE: previse brzo brise tagove ako se zadrzi key, mozda neki timeout
+            
             if (backspaceDelay) {
                 popTag();
             }
@@ -138,7 +132,7 @@ function InputStyled({
     //
 
     return (
-        <Wrapper size={size} dropDownStyle={dropDownStyle}>
+        <Wrapper size={size} showDropdown={showDropdown}>
             {prependIcon}
             <InputWrapper>
                 <Input

@@ -1,11 +1,19 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import searchReducer from "./MainSearch/mainSearchReducer";
+import { applyMiddleware, createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import createSagaMiddleware from "redux-saga";
+import searchReducer, {
+    loadAutoCompleteList,
+} from "./MainSearch/mainSearchReducer";
+
+const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     searchReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(loadAutoCompleteList);
 
 export default function WrapperProvider({ children }) {
     return <Provider store={store}>{children}</Provider>;

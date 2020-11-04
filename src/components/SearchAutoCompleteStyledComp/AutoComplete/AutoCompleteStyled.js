@@ -12,6 +12,7 @@ function AutoCompleteStyled({
     dropdownSelector,
     setInputValue,
     resetState,
+    setSelector,
 }) {
     //resetujemo state zbog key pa posle setujemo input
     //NOTE: trebalo bi da  napisem jedan metod za oba
@@ -33,6 +34,7 @@ function AutoCompleteStyled({
                     selected={index === dropdownSelector}
                     key={item.code}
                     data-id={index}
+                    onMouseEnter={() => setSelector(index)}
                 >
                     {item.name}
                 </Li>

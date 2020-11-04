@@ -4,19 +4,11 @@ import InputStyled from "./Input/InputStyled";
 import mockStates from "./mocks/inputAutoComplete";
 import { RelativeContainer } from "./StyledComp";
 import { connect } from "react-redux";
-import {
-    resetState,
-    setAutocompleteList,
-} from "./store/MainSearch/mainSearchReducer";
-import { debounce } from "lodash";
+import { fetchAutoCompleteList } from "./store/MainSearch/mainSearchReducer";
 
-function SearchACSC({
-    autocompleteList,
-    setAutocompleteList,
-    tagLimitReached,
-}) {
+function SearchACSC({ autocompleteList, inputLength, getAutoCompleteList }) {
     //Proveravamo da li je lista prazna
-    const dropdown = !!autocompleteList.length;
+    const showDropdown = !!autocompleteList.length && !!inputLength;
 
     //Trazimo odgovarajucu rec za dopunu
     //NOTE: treba napraviti dobru logiku i snimati najcesce koriscene reci
@@ -25,46 +17,13 @@ function SearchACSC({
         const word = mockStates.find((x) =>
             x.name.toLowerCase().startsWith(input.toLowerCase())
         );
-
         return word ? word.name : null;
     };
 
-    const Flist = debounce(
-        function fetchList(inputValue) {
-            if (!inputValue) {
-                setAutocompleteList([]);
-                return;
-            }
-            fetch("https://api.npoint.io/b12a6e7e85e8e63d54a2")
-                .then((res) => res.json())
-                .then((data) => {
-                    const result = data.filter((item) => {
-                        return item.name
-                            .toLowerCase()
-                            .startsWith(inputValue.toLowerCase());
-                    });
-
-                    const finished = result.slice(0, 10);
-
-                    setAutocompleteList(finished);
-                });
-        },
-        100,
-        {
-            leading: false,
-            trailing: true,
-        }
-    );
     //trazimo listu iz api rute
     const onChange = (inputValue) => {
-        if (tagLimitReached) {
-            setAutocompleteList([]);
-            return;
-        }
-        if (!inputValue) {
-            Flist.cancel();
-        }
-        Flist(inputValue);
+        getAutoCompleteList(inputValue);
+        
     };
 
     return (
@@ -73,9 +32,9 @@ function SearchACSC({
                 size={"3em"}
                 suggestedWord={suggestionWords}
                 handleOnChange={onChange}
-                dropDownStyle={autocompleteList.length}
+                showDropdown={showDropdown}
             />
-            {dropdown && <AutoCompleteStyled />}
+            {showDropdown && <AutoCompleteStyled />}
         </RelativeContainer>
     );
 }
@@ -83,19 +42,13 @@ function SearchACSC({
 const mapStateToProps = (state) => {
     return {
         autocompleteList: state.autocompleteList,
-        tagLimitReached:
-            state.tagLimit && state.tagLimit <= state.tagList.length,
+        inputLength: state.inputValue.length,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setAutocompleteList: (value) => {
-            dispatch(setAutocompleteList(value));
-        },
-        reset: () => {
-            dispatch(resetState());
-        },
+        getAutoCompleteList: (value) => dispatch(fetchAutoCompleteList(value)),
     };
 };
 

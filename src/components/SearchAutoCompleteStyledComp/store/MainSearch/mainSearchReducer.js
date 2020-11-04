@@ -2,6 +2,8 @@ import produce from "immer";
 import tagList from "../../mocks/tagsMock";
 import { onDeleteHandler, manageTagList } from "./logic/tags";
 import menageSelector from "./logic/moveSelector";
+import axios from "axios";
+import { takeLatest, put, call } from "redux-saga/effects";
 //! ****************************************************************//
 //!ACTIONTYPES CONSTANTS
 const DELETE_TAG = "DELETE_TAG";
@@ -15,8 +17,32 @@ const SET_INPUT_VALUE = "SET_INPUT_VALUE";
 const CLEAR_INPUT = "CLEAR_INPUT";
 const RESET_STATE = "RESET_STATE";
 const SET_ALL_INPUTS = "SET_ALL_INPUTS";
+const FETCH_AUTOCOMPLETE_LIST = "FETCH_AUTOCOMPLETE_LIST";
+
 //! ****************************************************************//
 //!ACTIONS
+
+function* getAutoCompleteList(action) {
+    const {
+        payload: { value },
+    } = action;
+    let finished = yield axios
+        .get("https://api.npoint.io/b12a6e7e85e8e63d54a2")
+        .then(({ data }) => {
+            return data.filter((item) => {
+                return item.name.toLowerCase().startsWith(value.toLowerCase());
+            });
+        });
+    yield (finished = finished.slice(0, 10));
+
+    yield put(setAutocompleteList(finished));
+}
+
+export function* fetchList() {}
+
+export function* loadAutoCompleteList() {
+    yield takeLatest("FETCH_AUTOCOMPLETE_LIST", getAutoCompleteList);
+}
 
 export function deleteTag(id) {
     return { type: DELETE_TAG, payload: { id } };
@@ -34,8 +60,8 @@ export function moveSelector(key) {
     return { type: MOVE_SELECTOR, payload: { key } };
 }
 
-export function setSelector(key) {
-    return { type: SET_SELECTOR, payload: { key } };
+export function setSelector(index) {
+    return { type: SET_SELECTOR, payload: { index } };
 }
 
 export function setInputValue(value) {
@@ -60,6 +86,10 @@ export function setAutocompleteList(value) {
 
 export function resetState() {
     return { type: RESET_STATE, payload: {} };
+}
+
+export function fetchAutoCompleteList(value) {
+    return { type: FETCH_AUTOCOMPLETE_LIST, payload: { value } };
 }
 
 //! ****************************************************************//
@@ -129,6 +159,8 @@ export default function reducer(state = initialState, action) {
             case CLEAR_INPUT:
                 draft.autoSuggestion = "";
                 draft.inputValue = "";
+                draft.dropdownSelector = -1;
+
                 break;
 
             default:

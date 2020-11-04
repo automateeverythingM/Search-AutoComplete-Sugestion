@@ -49,7 +49,7 @@ export const Wrapper = styled.div`
         `}
 
     ${(props) =>
-        props.dropDownStyle &&
+        props.showDropdown &&
         css`
             border-radius: 0.2em 0.2em 0 0;
         `}
@@ -126,11 +126,6 @@ export const Li = styled.li`
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
     padding: 0.5em 3em;
     z-index: 999;
-
-    &:hover {
-        background-color: ${(props) =>
-            darken(0.1, props.backgroundColor || "white")};
-    }
 
     ${(props) =>
         props.selected &&
