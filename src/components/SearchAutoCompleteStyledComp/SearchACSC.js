@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AutoCompleteStyled from "./AutoComplete/AutoCompleteStyled";
 import InputStyled from "./Input/InputStyled";
 import mockStates from "./mocks/inputAutoComplete";
 import { RelativeContainer } from "./StyledComp";
 import { connect } from "react-redux";
-import { fetchAutoCompleteList } from "./store/MainSearch/mainSearchReducer";
+import {
+    fetchAutoCompleteList,
+    setAutocompleteList,
+} from "./store/MainSearch/mainSearchReducer";
 
-function SearchACSC({ autocompleteList, inputLength, getAutoCompleteList }) {
+function SearchACSC({
+    autocompleteList,
+    inputLength,
+    getAutoCompleteList,
+    emptyAutoCompleteList,
+}) {
     //Proveravamo da li je lista prazna
     const showDropdown = !!autocompleteList.length && !!inputLength;
 
@@ -23,8 +31,12 @@ function SearchACSC({ autocompleteList, inputLength, getAutoCompleteList }) {
     //trazimo listu iz api rute
     const onChange = (inputValue) => {
         getAutoCompleteList(inputValue);
-        
     };
+    //prazni listu ako je ostalo nesto posle zatvaranja liste
+    useEffect(() => {
+        if (!showDropdown) emptyAutoCompleteList([]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showDropdown]);
 
     return (
         <RelativeContainer>
@@ -49,6 +61,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getAutoCompleteList: (value) => dispatch(fetchAutoCompleteList(value)),
+        emptyAutoCompleteList: (value) => dispatch(setAutocompleteList(value)),
     };
 };
 
