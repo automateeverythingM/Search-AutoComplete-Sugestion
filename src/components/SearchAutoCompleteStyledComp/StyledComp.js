@@ -124,7 +124,7 @@ export const UlDropdown = styled(Ul)`
 export const Li = styled.li`
     text-align: ${(props) => props.textAlign || "left"};
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
-    padding: 0.5em 3em;
+    padding: 0.8em 0.3em;
     z-index: 999;
 
     ${(props) =>

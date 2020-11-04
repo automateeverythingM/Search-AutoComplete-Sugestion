@@ -10,6 +10,7 @@ import {
     setInputValue,
     moveSelector,
     clearAutocompleteList,
+    setCaseSensitiveSuggestion,
 } from "../store/MainSearch/mainSearchReducer";
 import { CloseButton, Input, InputWrapper, Wrapper } from "../StyledComp";
 function InputStyled({
@@ -28,9 +29,11 @@ function InputStyled({
     setAutoSuggestion,
     setInputValue,
     moveSelector,
+    setCaseSensitive,
+    caseSensitiveFill,
 }) {
     //local state for input
-    const [caseSensitiveFill, setCaseSensitive] = useState("");
+    // const [caseSensitiveFill, setCaseSensitive] = useState("");
     const [backspaceDelay, setBackspaceDelay] = useState(true);
     const input = useRef();
     //appedndujemo na base word suggestion
@@ -70,7 +73,6 @@ function InputStyled({
         autoSuggestionManager(value);
 
         if (value.trim()) handleOnChange(value);
-
         setBackspaceDelay(false);
     };
 
@@ -172,6 +174,7 @@ const mapStateToProps = (state) => {
     return {
         inputValue: state.inputValue,
         autoSuggestion: state.autoSuggestion,
+        caseSensitiveFill: state.caseSensitiveFillSuggestion,
     };
 };
 
@@ -188,6 +191,8 @@ const mapDispatchToProps = (dispatch) => {
         addTag: (value) => dispatch(addTag(value)),
         resetState: () => dispatch(resetState()),
         moveSelector: (value) => dispatch(moveSelector(value)),
+        setCaseSensitive: (value) =>
+            dispatch(setCaseSensitiveSuggestion(value)),
     };
 };
 

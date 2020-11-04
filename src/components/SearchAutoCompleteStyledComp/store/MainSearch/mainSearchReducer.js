@@ -19,9 +19,7 @@ const RESET_STATE = "RESET_STATE";
 const SET_ALL_INPUTS = "SET_ALL_INPUTS";
 const FETCH_AUTOCOMPLETE_LIST = "FETCH_AUTOCOMPLETE_LIST";
 const CLEAR_AUTOCOMPLETE_LIST = "CLEAR_AUTOCOMPLETE_LIST";
-
-//! ****************************************************************//
-//!ACTIONS
+const SET_CASE_SENSITIVE_SUGGESTION = "FETCH_AUTOSUGGEST";
 
 function* getAutoCompleteList(action) {
     const {
@@ -39,6 +37,8 @@ function* getAutoCompleteList(action) {
     yield put(setAutocompleteList(finished));
 }
 
+//! ****************************************************************//
+//!ACTIONS
 export function* loadAutoCompleteList() {
     yield takeLatest("FETCH_AUTOCOMPLETE_LIST", getAutoCompleteList);
 }
@@ -95,6 +95,9 @@ export function fetchAutoCompleteList(value) {
     return { type: FETCH_AUTOCOMPLETE_LIST, payload: { value } };
 }
 
+export function setCaseSensitiveSuggestion(value) {
+    return { type: SET_CASE_SENSITIVE_SUGGESTION, payload: { value } };
+}
 //! ****************************************************************//
 //! INITIAL STATE
 const initialState = {
@@ -104,6 +107,7 @@ const initialState = {
     tempInputValue: "",
     inputValue: "",
     autoSuggestion: "",
+    caseSensitiveFillSuggestion: "",
     dropdownSelector: -1,
     keyCodes: { 40: 1, 38: -1 },
     manageTagList: () => {},
@@ -171,6 +175,10 @@ export default function reducer(state = initialState, action) {
                 draft.dropdownSelector = -1;
                 draft.tempInputValue = "";
 
+                break;
+
+            case SET_CASE_SENSITIVE_SUGGESTION:
+                draft.caseSensitiveFillSuggestion = payload.value;
                 break;
 
             default:
