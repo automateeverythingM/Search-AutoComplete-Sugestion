@@ -174,8 +174,9 @@ function InputStyled({
                     &times;
                 </CloseButton>
             </SearchInputs>
+            
             <SearchButton showDropdown={showDropdown}>
-                <GoSearch size="1em" />
+                <GoSearch size="1.5em" />
             </SearchButton>
         </Wrapper>
     );

@@ -9,7 +9,7 @@ export const InputWrapper = styled.div`
     display: flex;
     align-items: center;
     width: ${(props) => props.width || "100%"};
-    height: ${(props) => props.height || "1.5em"};
+    height: ${(props) => props.height || "100%"};
 `;
 
 export const Wrapper = styled.div`
@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
     border-radius: 0.6em;
     box-shadow: 2px 3px 4px #090b0a;
     height: 4em;
-    background: #1c2321;
+    background: inherit;
     ${(props) =>
         props.tagLimitReached &&
         css`
@@ -37,7 +37,7 @@ export const SearchInputs = styled.div`
     flex: 0 0 85%;
     align-items: center;
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
-    padding: 0.5em 0 0.5em 0.5em;
+    padding: 0.2em 0 0.2em 0.5em;
     height: 100%;
 `;
 
@@ -47,7 +47,7 @@ export const SearchButton = styled.button`
     height: 100%;
     flex: 0 0 15%;
     background: #ddd;
-    color: #1c2321;
+    color: inherit;
     border-left: 3px solid transparent;
     cursor: pointer;
     padding: 0;
@@ -77,7 +77,7 @@ export const Input = styled.input`
     width: ${(props) => props.width || "3000px"};
     outline: none;
     border: none;
-    color: ${(props) => props.color || "#333"};
+    color: ${(props) => props.color || "inherit"};
     padding-left: 0.1em;
     font-size: 1.5em;
     background: ${(props) => props.backgroundColor || "transparent"};
@@ -97,7 +97,7 @@ export const Button = styled.button`
 `;
 
 export const Icon = styled(Button)`
-    color: ${(props) => props.color || "#333333"};
+    color: ${(props) => props.color || "inherit"};
     font-size: 0.5em;
     padding: 0 0.5em;
 
@@ -194,7 +194,7 @@ export const LiTag = styled.li`
     transition: all 0.1s ease-in-out;
     transition: box-shadow 0.3s ease-in-out;
     box-shadow: 1px 0 3px 1px #090b0a;
-    color: #333;
+    color: inherit;
     background-color: whitesmoke;
 
     &:hover {
