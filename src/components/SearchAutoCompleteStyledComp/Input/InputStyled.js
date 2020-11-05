@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
+import { GoSearch } from "react-icons/go";
 import {
     addTag,
     clearAllInputs,
@@ -12,10 +13,16 @@ import {
     clearAutocompleteList,
     setCaseSensitiveSuggestion,
 } from "../store/MainSearch/mainSearchReducer";
-import { CloseButton, Input, InputWrapper, Wrapper } from "../StyledComp";
+import {
+    Button,
+    CloseButton,
+    Input,
+    InputWrapper,
+    SearchButton,
+    SearchInputs,
+    Wrapper,
+} from "../StyledComp";
 function InputStyled({
-    size,
-    prependIcon,
     handleOnChange,
     suggestedWord,
     showDropdown,
@@ -31,9 +38,8 @@ function InputStyled({
     moveSelector,
     setCaseSensitive,
     caseSensitiveFill,
+    dropdownSelector,
 }) {
-    //local state for input
-    // const [caseSensitiveFill, setCaseSensitive] = useState("");
     const [backspaceDelay, setBackspaceDelay] = useState(true);
     const input = useRef();
     //appedndujemo na base word suggestion
@@ -87,6 +93,7 @@ function InputStyled({
         const currentInputValue = event.target.value;
         if (event.key === "Tab") {
             event.preventDefault();
+            if (dropdownSelector > -1) return;
 
             // if (dropdownSelector !== -1) return;
             //ako ima vredonst setujemo je
@@ -136,36 +143,40 @@ function InputStyled({
     //
 
     return (
-        <Wrapper size={size} showDropdown={showDropdown}>
-            {prependIcon}
-            <InputWrapper>
-                <Input
-                    type="text"
-                    autoComplete="off"
-                    value={inputValue}
-                    onChange={handleOnChangeInput}
-                    onKeyDown={handleKeyDown}
-                    onKeyUp={handleKeyUp}
-                    zIndex="50"
-                    ref={input}
-                />
-                <Input
-                    type="text"
-                    readOnly
-                    autoComplete="off"
-                    value={autoSuggestion}
-                    zIndex="20"
-                    color="#d4d4d4"
-                    autoFocus
-                />
-            </InputWrapper>
-            <CloseButton
-                color="red"
-                show={inputValue.length}
-                onClick={handleClearInput}
-            >
-                &times;
-            </CloseButton>
+        <Wrapper showDropdown={showDropdown}>
+            <SearchInputs>
+                <InputWrapper>
+                    <Input
+                        type="text"
+                        autoComplete="off"
+                        value={inputValue}
+                        onChange={handleOnChangeInput}
+                        onKeyDown={handleKeyDown}
+                        onKeyUp={handleKeyUp}
+                        zIndex="50"
+                        ref={input}
+                    />
+                    <Input
+                        type="text"
+                        readOnly
+                        autoComplete="off"
+                        value={autoSuggestion}
+                        zIndex="20"
+                        color="#d4d4d4"
+                        autoFocus
+                    />
+                </InputWrapper>
+                <CloseButton
+                    color="red"
+                    show={inputValue.length}
+                    onClick={handleClearInput}
+                >
+                    &times;
+                </CloseButton>
+            </SearchInputs>
+            <SearchButton showDropdown={showDropdown}>
+                <GoSearch size="1em" />
+            </SearchButton>
         </Wrapper>
     );
 }
@@ -175,6 +186,7 @@ const mapStateToProps = (state) => {
         inputValue: state.inputValue,
         autoSuggestion: state.autoSuggestion,
         caseSensitiveFill: state.caseSensitiveFillSuggestion,
+        dropdownSelector: state.dropdownSelector,
     };
 };
 

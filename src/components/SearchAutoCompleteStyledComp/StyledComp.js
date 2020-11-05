@@ -2,26 +2,12 @@ import styled, { css } from "styled-components";
 import { lighten, darken } from "polished";
 
 //!!!INPUTSTYLE
-export const Input = styled.input`
-    position: ${(props) => props.position || "absolute"};
-    font-size: 0.7em;
-    width: ${(props) => props.width || "3000px"};
-    outline: none;
-    border: none;
-    font-size: ${(props) => props.fontSize || "0.7em"};
-    color: ${(props) => props.color || "#333"};
-    padding: 0.2em 0;
-    padding-left: 0.1em;
-    background: ${(props) => props.backgroundColor || "transparent"};
-    z-index: ${(props) => props.zIndex};
-`;
 
 export const InputWrapper = styled.div`
     overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
-    padding-left: 0.7em;
     width: ${(props) => props.width || "100%"};
     height: ${(props) => props.height || "1.5em"};
 `;
@@ -30,39 +16,80 @@ export const Wrapper = styled.div`
     display: flex;
     align-items: center;
     overflow: hidden;
-    background-color: ${(props) => props.backgroundColor || "whitesmoke"};
-    padding: 0.2em 0 0.2em 0.3em;
-    font-size: ${(props) => props.size || "1rem"};
-    border-right: 1px solid #ddd;
-    border-top: 1px solid #eee;
-    border-left: 1px solid #eee;
-    border-radius: 0.2em;
+    border-radius: 0.6em;
     box-shadow: 2px 3px 4px #090b0a;
-    -webkit-border-radius: 0.2em;
-    -moz-border-radius: 0.2em;
-    -ms-border-radius: 0.2em;
-    -o-border-radius: 0.2em;
+    height: 3em;
+    background: #1c2321;
     ${(props) =>
         props.tagLimitReached &&
         css`
             border: 0.1em solid darkred;
         `}
+    ${(props) =>
+        props.showDropdown &&
+        css`
+            border-radius: 0.6em 0.6em 0 0;
+        `};
+`;
+
+export const SearchInputs = styled.div`
+    display: flex;
+    flex: 0 0 85%;
+    align-items: center;
+    background-color: ${(props) => props.backgroundColor || "whitesmoke"};
+    padding: 0.8em 0 0.8em 0.5em;
+`;
+
+export const SearchButton = styled.button`
+    outline: none;
+    border: none;
+    height: 100%;
+    flex: 0 0 15%;
+    background: #ddd;
+    color: #1c2321;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    padding: 0;
+
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background: #bbb;
+        border-left: 3px solid #1c2321;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
 
     ${(props) =>
         props.showDropdown &&
         css`
-            border-radius: 0.2em 0.2em 0 0;
+            &:hover {
+                border-bottom: 3px solid #1c2321;
+            }
         `}
 `;
+
+export const Input = styled.input`
+    position: ${(props) => props.position || "absolute"};
+    width: ${(props) => props.width || "3000px"};
+    outline: none;
+    border: none;
+    color: ${(props) => props.color || "#333"};
+    padding-left: 0.1em;
+    font-size: 1.2em;
+    background: ${(props) => props.backgroundColor || "transparent"};
+    z-index: ${(props) => props.zIndex};
+`;
+
 export const Button = styled.button`
     background: none;
     border: none;
     outline: none;
-    display: flex;
-    align-items: center;
     height: 100%;
+    width: 0%;
     transition: all 0.2s ease-in-out;
-
     &:active {
         filter: drop-shadow(0px 1px 0px #999);
     }
@@ -86,7 +113,8 @@ export const CloseButton = styled(Button)`
     visibility: ${(props) => (props.show ? "visible" : "hidden")};
     color: red;
     padding: 0 0.5em;
-    font-size: 0.8em;
+    font-size: 1.2em;
+    margin-right: 0.5em;
     &:hover {
         color: ${(props) => darken(0.2, props.color)};
     }
@@ -108,30 +136,29 @@ export const Ul = styled.ul`
     display: ${(props) => props.display};
     position: ${(props) => props.position};
     list-style: none;
+
     margin: 0;
     padding: 0;
     width: 100%;
 `;
 
 export const UlDropdown = styled(Ul)`
-    border-right: 1px solid #ddd;
     border-bottom: 1px solid #eee;
-    border-left: 1px solid #eee;
     box-shadow: 0px 0px 1px #ddd;
-    border-radius: 0 0 0.2em 0.2em;
+    border-radius: 0 0 0.6em 0.6em;
+    overflow: hidden;
 `;
 
 export const Li = styled.li`
     text-align: ${(props) => props.textAlign || "left"};
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
-    padding: 0.8em 0.3em;
+    padding: 0.5em 0.5em;
     z-index: 999;
-
     ${(props) =>
         props.selected &&
         css`
-            background-color: ${(props) =>
-                darken(0.1, props.backgroundColor || "white")};
+            background-color: #dedede;
+            padding-left: 1em;
         `}
 `;
 //!Search dropdown
@@ -140,10 +167,9 @@ export const Li = styled.li`
 export const CloseTag = styled.label`
     display: inline-block;
     align-self: center;
-    margin: 0;
+    margin-left: 0.2em;
     border: none;
     font-size: inherit;
-    font-weight: bold;
     font-family: inherit;
     padding: 0 5px;
     cursor: pointer;
@@ -157,9 +183,8 @@ export const CloseTag = styled.label`
 `;
 export const LiTag = styled.li`
     display: inline-flex;
-    padding: ${(props) => props.padding || "5px 15px"};
+    padding: 0.3em 0.3em 0.3em 0.5em;
     margin: 0 0.5em 0.5em 0px;
-    font-size: inherit;
     border-radius: ${(props) => props.borderRadius || "4px"};
     overflow: hidden;
     box-sizing: border-box;
@@ -178,11 +203,19 @@ export const LiTag = styled.li`
 
 export const TagLabel = styled.div`
     display: inline-block;
-    font-size: inherit;
     text-decoration: none;
     color: ${(props) => props.textColor};
-    padding: 5px;
-    font-weight: bold;
+`;
+
+export const Hr = styled.div`
+    border-top: 1px solid rgb(204, 203, 203);
+    width: 85%;
+`;
+
+export const HrWrapper = styled.div`
+    background: whitesmoke;
+    display: flex;
+    justify-content: center;
 `;
 
 //! TAGS
@@ -220,6 +253,7 @@ export const Jumbotron = styled.div`
     border-radius: 1em;
     padding: 2em;
     background: #1c2321;
+    font-size: 20px;
 `;
 
 export const TitleMsg = styled.h1`

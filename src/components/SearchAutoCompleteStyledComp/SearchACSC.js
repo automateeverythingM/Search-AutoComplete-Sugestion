@@ -41,7 +41,6 @@ function SearchACSC({
     return (
         <RelativeContainer>
             <InputStyled
-                size={"3em"}
                 suggestedWord={suggestionWords}
                 handleOnChange={onChange}
                 showDropdown={showDropdown}
