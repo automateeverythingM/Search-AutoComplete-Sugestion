@@ -4,6 +4,7 @@ import {
     resetState,
     setInputValue,
     setSelector,
+    setTempInputValue,
 } from "../store/MainSearch/mainSearchReducer";
 import { Li, UlDropdown } from "../StyledComp";
 
@@ -34,7 +35,10 @@ function AutoCompleteStyled({
                     selected={index === dropdownSelector}
                     key={item.code}
                     data-id={index}
-                    onMouseEnter={() => setSelector(index)}
+                    onMouseEnter={() => {
+                        setSelector(index)
+                        setTempInputValue()
+                    }}
                 >
                     {item.name}
                 </Li>
@@ -52,6 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
     setSelector: (index) => dispatch(setSelector(index)),
     resetState: () => dispatch(resetState()),
     setInputValue: (value) => dispatch(setInputValue(value)),
+    setTempInputValue: () => dispatch(setTempInputValue()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoCompleteStyled);

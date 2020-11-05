@@ -25,12 +25,14 @@ export default function moveSelector(state, key) {
     let {
         dropdownSelector: current,
         tempInputValue,
+        tempAutoSuggestValue,
         inputValue,
         autocompleteList,
     } = state;
 
     if (current === -1 && tempInputValue !== inputValue) {
         state.tempInputValue = inputValue;
+        state.tempAutoSuggestValue = state.autoSuggestion;
     }
 
     current += keyCodes[key];
@@ -39,7 +41,7 @@ export default function moveSelector(state, key) {
     // i obrnuto u else if
     if (current === -1) {
         state.inputValue = tempInputValue;
-        state.autoSuggestion = tempInputValue;
+        state.autoSuggestion = tempAutoSuggestValue;
         state.dropdownSelector = current;
     } else if (current < -1) {
         current = autocompleteList.length - 1;
@@ -50,7 +52,7 @@ export default function moveSelector(state, key) {
         current = -1;
         state.dropdownSelector = -1;
         state.inputValue = tempInputValue;
-        state.autoSuggestion = "";
+        state.autoSuggestion = tempAutoSuggestValue;
     } else {
         state.dropdownSelector = current;
         state.inputValue = autocompleteList[current].name;

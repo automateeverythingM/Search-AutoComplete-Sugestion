@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
     overflow: hidden;
     border-radius: 0.6em;
     box-shadow: 2px 3px 4px #090b0a;
-    height: 3em;
+    height: 4em;
     background: #1c2321;
     ${(props) =>
         props.tagLimitReached &&
@@ -37,7 +37,8 @@ export const SearchInputs = styled.div`
     flex: 0 0 85%;
     align-items: center;
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
-    padding: 0.8em 0 0.8em 0.5em;
+    padding: 0.5em 0 0.5em 0.5em;
+    height: 100%;
 `;
 
 export const SearchButton = styled.button`
@@ -78,7 +79,7 @@ export const Input = styled.input`
     border: none;
     color: ${(props) => props.color || "#333"};
     padding-left: 0.1em;
-    font-size: 1.2em;
+    font-size: 1.5em;
     background: ${(props) => props.backgroundColor || "transparent"};
     z-index: ${(props) => props.zIndex};
 `;
