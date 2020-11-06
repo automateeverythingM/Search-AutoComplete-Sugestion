@@ -22,6 +22,7 @@ import {
     SearchInputs,
     Wrapper,
 } from "../StyledComp";
+import Selection from "../Selection/Selection";
 function InputStyled({
     handleOnChange,
     suggestedWord,
@@ -174,7 +175,7 @@ function InputStyled({
                     &times;
                 </CloseButton>
             </SearchInputs>
-            
+            <Selection />
             <SearchButton showDropdown={showDropdown}>
                 <GoSearch size="1.5em" />
             </SearchButton>

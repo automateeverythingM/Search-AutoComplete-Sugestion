@@ -34,7 +34,7 @@ export const Wrapper = styled.div`
 
 export const SearchInputs = styled.div`
     display: flex;
-    flex: 0 0 85%;
+    flex: 0 0 75%;
     align-items: center;
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
     padding: 0.2em 0 0.2em 0.5em;
@@ -282,3 +282,19 @@ export const SpanText = styled.span`
     vertical-align: middle;
     font-size: 15em;
 `;
+
+//! SELECT
+
+export const SelectWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: whitesmoke;
+    height: 100%;
+    padding: 0 1em;
+    flex: 0 0 10%;
+    border: none;
+    border-left: 1px solid #ddd;
+`;
+
+//! SELECT
