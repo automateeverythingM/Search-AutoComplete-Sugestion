@@ -156,6 +156,8 @@ export const UlSelect = styled(Ul)`
     opacity: 0;
     border-left: 3px solid transparent;
     z-index: 1010;
+    box-shadow: 1px 1px 3px #aaa;
+
     ${(props) =>
         props.show &&
         css`
@@ -334,6 +336,7 @@ export const SelectLi = styled.li`
     text-align: center;
     cursor: pointer;
     background: whitesmoke;
+    padding: 0.4em 0;
 
     ${(props) =>
         props.selected &&
