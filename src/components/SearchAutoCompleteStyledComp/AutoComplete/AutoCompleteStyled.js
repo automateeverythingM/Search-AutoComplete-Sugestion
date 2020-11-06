@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
+    focusInput,
     resetState,
     setInputValue,
     setSelector,
@@ -14,12 +15,14 @@ function AutoCompleteStyled({
     setInputValue,
     resetState,
     setSelector,
+    focusInput,
 }) {
     //resetujemo state zbog key pa posle setujemo input
     //NOTE: trebalo bi da  napisem jedan metod za oba
     function onClickHandler(e) {
         resetState();
         setInputValue(e.target.innerText);
+        focusInput();
     }
 
     return (
@@ -36,8 +39,8 @@ function AutoCompleteStyled({
                     key={item.code}
                     data-id={index}
                     onMouseEnter={() => {
-                        setSelector(index)
-                        setTempInputValue()
+                        setSelector(index);
+                        setTempInputValue();
                     }}
                 >
                     {item.name}
@@ -57,6 +60,7 @@ const mapDispatchToProps = (dispatch) => ({
     resetState: () => dispatch(resetState()),
     setInputValue: (value) => dispatch(setInputValue(value)),
     setTempInputValue: () => dispatch(setTempInputValue()),
+    focusInput: (value) => dispatch(focusInput()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoCompleteStyled);

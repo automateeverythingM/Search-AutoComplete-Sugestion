@@ -24,6 +24,8 @@ const SET_CASE_SENSITIVE_SUGGESTION = "FETCH_AUTOSUGGEST";
 const SET_TEMP_INPUT_VALUE = "SET_TEMP_INPUT_VALUE";
 const SET_SELECT_FILTER = "SET_SELECT_FILTERS";
 const TOGGLE_FILTER_LIST = "TOGGLE_FILTER_LIST";
+const FOCUS_INPUT = "FOCUS_INPUT";
+const ASSIGN_INPUT_REF = "ASSIGN_INPUT_REF";
 
 function* getAutoCompleteList(action) {
     const {
@@ -75,6 +77,14 @@ export function setInputValue(value) {
     return { type: SET_INPUT_VALUE, payload: { value } };
 }
 
+export function focusInput() {
+    return { type: FOCUS_INPUT, payload: {} };
+}
+
+export function assignInputRef(value) {
+    return { type: ASSIGN_INPUT_REF, payload: { value } };
+}
+
 export function setAutoSuggestion(value) {
     return { type: SET_AUTO_SUGGESTION, payload: { value } };
 }
@@ -114,6 +124,7 @@ export function setTempInputValue(value) {
 export function toggleFilterList() {
     return { type: TOGGLE_FILTER_LIST, payload: {} };
 }
+
 //! ****************************************************************//
 //! INITIAL STATE
 const initialState = {
@@ -126,6 +137,7 @@ const initialState = {
     tempInputValue: "",
     tempAutoSuggestValue: "",
     inputValue: "",
+    inputRef: null,
     autoSuggestion: "",
     caseSensitiveFillSuggestion: "",
     dropdownSelector: -1,
@@ -225,6 +237,17 @@ export default function reducer(state = initialState, action) {
 
             case TOGGLE_FILTER_LIST:
                 draft.showFilterList = !draft.showFilterList;
+                break;
+
+            case FOCUS_INPUT:
+                draft.inputRef.focus();
+                break;
+
+            case ASSIGN_INPUT_REF:
+                draft.inputRef = payload.value;
+                console.log("reducer -> draft.inputRef", draft.inputRef);
+                console.log("reducer -> payload.value", payload.value);
+
                 break;
 
             default:

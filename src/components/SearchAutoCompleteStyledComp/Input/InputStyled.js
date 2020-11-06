@@ -12,6 +12,8 @@ import {
     moveSelector,
     clearAutocompleteList,
     setCaseSensitiveSuggestion,
+    focusInput,
+    assignInputRef,
 } from "../store/MainSearch/mainSearchReducer";
 import {
     CloseButton,
@@ -27,6 +29,7 @@ function InputStyled({
     suggestedWord,
     showDropdown,
     inputValue,
+    assignInputRef,
     autoSuggestion,
     clearAutocompleteList,
     addTag,
@@ -41,8 +44,9 @@ function InputStyled({
     dropdownSelector,
 }) {
     const [backspaceDelay, setBackspaceDelay] = useState(true);
-    const input = useRef();
     //appedndujemo na base word suggestion
+
+    let inputRef;
 
     const appendSuggestion = (currentValue, suggestion) => {
         const toAppend = suggestion.slice(currentValue.length);
@@ -63,13 +67,14 @@ function InputStyled({
 
     //NOTE: treba doraditi ovo ne potrebno komplikovano
     useEffect(() => {
-        if (inputValue === "") input.current.focus();
+        if (inputValue === "") inputRef.focus();
     });
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        input.current.focus();
-    }, []);
+        inputRef.focus();
+        assignInputRef(inputRef);
+    }, [assignInputRef, inputRef]);
 
     // set value and call call users handler
     const handleOnChangeInput = (event) => {
@@ -154,7 +159,7 @@ function InputStyled({
                         onKeyDown={handleKeyDown}
                         onKeyUp={handleKeyUp}
                         zIndex="50"
-                        ref={input}
+                        ref={(input) => (inputRef = input)}
                     />
                     <Input
                         type="text"
@@ -188,6 +193,7 @@ const mapStateToProps = (state) => {
         autoSuggestion: state.autoSuggestion,
         caseSensitiveFill: state.caseSensitiveFillSuggestion,
         dropdownSelector: state.dropdownSelector,
+        refInput: state.inputRef,
     };
 };
 
@@ -206,6 +212,8 @@ const mapDispatchToProps = (dispatch) => {
         moveSelector: (value) => dispatch(moveSelector(value)),
         setCaseSensitive: (value) =>
             dispatch(setCaseSensitiveSuggestion(value)),
+        setInputFocus: () => dispatch(focusInput()),
+        assignInputRef: (value) => dispatch(assignInputRef(value)),
     };
 };
 
