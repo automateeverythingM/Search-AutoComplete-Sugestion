@@ -14,7 +14,6 @@ import {
     setCaseSensitiveSuggestion,
 } from "../store/MainSearch/mainSearchReducer";
 import {
-    Button,
     CloseButton,
     Input,
     InputWrapper,
@@ -144,8 +143,8 @@ function InputStyled({
     //
 
     return (
-        <Wrapper showDropdown={showDropdown}>
-            <SearchInputs>
+        <Wrapper>
+            <SearchInputs showDropdown={showDropdown}>
                 <InputWrapper>
                     <Input
                         type="text"
@@ -199,7 +198,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         setInputValue: (value) => dispatch(setInputValue(value)),
         clearAutocompleteList: () => dispatch(clearAutocompleteList()),
-        clearAllInputs: (value) => dispatch(clearAllInputs()),
+        clearAllInputs: () => dispatch(clearAllInputs()),
         setAllInputs: (value) => dispatch(setAllInputs(value)),
         popTag: () => dispatch(popTag()),
         addTag: (value) => dispatch(addTag(value)),

@@ -15,7 +15,6 @@ export const InputWrapper = styled.div`
 export const Wrapper = styled.div`
     display: flex;
     align-items: center;
-    overflow: hidden;
     border-radius: 0.6em;
     box-shadow: 2px 3px 4px #090b0a;
     height: 4em;
@@ -34,23 +33,31 @@ export const Wrapper = styled.div`
 
 export const SearchInputs = styled.div`
     display: flex;
-    flex: 0 0 75%;
+    width: 75%;
     align-items: center;
+    border-radius: 0.6em 0 0 0.6em;
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
     padding: 0.2em 0 0.2em 0.5em;
     height: 100%;
+
+    ${(props) =>
+        props.showDropdown &&
+        css`
+            border-radius: 0.6em 0 0 0;
+        `};
 `;
 
 export const SearchButton = styled.button`
     outline: none;
     border: none;
     height: 100%;
-    flex: 0 0 15%;
+    width: 15%;
     background: #ddd;
     color: inherit;
     border-left: 3px solid transparent;
     cursor: pointer;
     padding: 0;
+    border-radius: 0 0.6em 0.6em 0;
 
     transition: all 0.3s ease-in-out;
 
@@ -61,11 +68,14 @@ export const SearchButton = styled.button`
 
     &:active {
         transform: scale(0.98);
+        border-radius: 0 0.5em 0.5em 0;
     }
 
     ${(props) =>
         props.showDropdown &&
         css`
+            border-radius: 0 0.6em 0 0;
+
             &:hover {
                 border-bottom: 3px solid #1c2321;
             }
@@ -116,6 +126,7 @@ export const CloseButton = styled(Button)`
     padding: 0 0.5em;
     font-size: 1.2em;
     margin-right: 0.5em;
+    user-select: none;
     &:hover {
         color: ${(props) => darken(0.2, props.color)};
     }
@@ -137,10 +148,19 @@ export const Ul = styled.ul`
     display: ${(props) => props.display};
     position: ${(props) => props.position};
     list-style: none;
-
     margin: 0;
     padding: 0;
     width: 100%;
+`;
+export const UlSelect = styled(Ul)`
+    opacity: 0;
+    border-left: 3px solid transparent;
+    z-index: 1010;
+    ${(props) =>
+        props.show &&
+        css`
+            opacity: 1;
+        `}
 `;
 
 export const UlDropdown = styled(Ul)`
@@ -148,13 +168,14 @@ export const UlDropdown = styled(Ul)`
     box-shadow: 0px 0px 1px #ddd;
     border-radius: 0 0 0.6em 0.6em;
     overflow: hidden;
+    user-select: none;
 `;
 
 export const Li = styled.li`
-    text-align: ${(props) => props.textAlign || "left"};
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
     padding: 0.5em 0.5em;
-    z-index: 999;
+    user-select: none;
+
     ${(props) =>
         props.selected &&
         css`
@@ -174,6 +195,7 @@ export const CloseTag = styled.label`
     font-family: inherit;
     padding: 0 5px;
     cursor: pointer;
+    user-select: none;
     transition: all 0.2s ease-in-out;
     &:hover {
         box-shadow: 0px 1px 2px #555;
@@ -285,16 +307,40 @@ export const SpanText = styled.span`
 
 //! SELECT
 
-export const SelectWrapper = styled.div`
+export const Select = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     background: whitesmoke;
     height: 100%;
     padding: 0 1em;
-    flex: 0 0 10%;
     border: none;
-    border-left: 1px solid #ddd;
+    border-left: 3px solid #ddd;
+
+    cursor: pointer;
+
+    &:hover {
+        border-left: 3px solid #1c2321;
+    }
 `;
 
+export const SelectWrapper = styled.div`
+    position: relative;
+    height: 100%;
+`;
+
+export const SelectLi = styled.li`
+    text-align: center;
+    cursor: pointer;
+    background: whitesmoke;
+
+    ${(props) =>
+        props.selected &&
+        css`
+            font-weight: bold;
+        `}
+    &:hover {
+        background-color: #dedede;
+    }
+`;
 //! SELECT

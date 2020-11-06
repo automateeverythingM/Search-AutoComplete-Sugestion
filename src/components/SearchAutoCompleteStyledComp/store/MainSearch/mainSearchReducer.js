@@ -1,5 +1,6 @@
 import produce from "immer";
 import tagList from "../../mocks/tagsMock";
+import selectFilters from "../../mocks/selectFilterMock";
 import { onDeleteHandler, manageTagList } from "./logic/tags";
 import menageSelector from "./logic/moveSelector";
 import axios from "axios";
@@ -21,6 +22,8 @@ const FETCH_AUTOCOMPLETE_LIST = "FETCH_AUTOCOMPLETE_LIST";
 const CLEAR_AUTOCOMPLETE_LIST = "CLEAR_AUTOCOMPLETE_LIST";
 const SET_CASE_SENSITIVE_SUGGESTION = "FETCH_AUTOSUGGEST";
 const SET_TEMP_INPUT_VALUE = "SET_TEMP_INPUT_VALUE";
+const SET_SELECT_FILTER = "SET_SELECT_FILTERS";
+const TOGGLE_FILTER_LIST = "TOGGLE_FILTER_LIST";
 
 function* getAutoCompleteList(action) {
     const {
@@ -54,6 +57,10 @@ export function popTag() {
 
 export function addTag(tagName) {
     return { type: ADD_TAG, payload: { tagName } };
+}
+
+export function setSelectFilter(value) {
+    return { type: SET_SELECT_FILTER, payload: { value } };
 }
 
 export function moveSelector(key) {
@@ -103,12 +110,19 @@ export function setCaseSensitiveSuggestion(value) {
 export function setTempInputValue(value) {
     return { type: SET_TEMP_INPUT_VALUE, payload: { value } };
 }
+
+export function toggleFilterList() {
+    return { type: TOGGLE_FILTER_LIST, payload: {} };
+}
 //! ****************************************************************//
 //! INITIAL STATE
 const initialState = {
     tagList: tagList,
     dropdownList: [],
     autocompleteList: [],
+    selectFilterList: selectFilters,
+    selectedFilter: selectFilters.find((item) => item.selected === true),
+    showFilterList: false,
     tempInputValue: "",
     tempAutoSuggestValue: "",
     inputValue: "",
@@ -170,6 +184,7 @@ export default function reducer(state = initialState, action) {
                 draft.autocompleteList = [];
                 draft.dropdownSelector = -1;
                 draft.tempInputValue = "";
+                draft.tempAutoSuggestValue = "";
                 break;
             case SET_ALL_INPUTS:
                 draft.autoSuggestion = payload.value;
@@ -183,12 +198,33 @@ export default function reducer(state = initialState, action) {
 
                 break;
 
+            case SET_SELECT_FILTER:
+                const foundedSelected = draft.selectFilterList.find(
+                    (item) => item.id == payload.value
+                );
+                if (foundedSelected) {
+                    draft.selectFilterList.map((item) => {
+                        if (item.selected === true) item.selected = false;
+                        return item;
+                    });
+                    foundedSelected.selected = true;
+                    draft.selectedFilter = foundedSelected;
+                }
+
+                draft.showFilterList = false;
+
+                break;
+
             case SET_CASE_SENSITIVE_SUGGESTION:
                 draft.caseSensitiveFillSuggestion = payload.value;
                 break;
 
             case SET_TEMP_INPUT_VALUE:
                 draft.tempInputValue = draft.inputValue;
+                break;
+
+            case TOGGLE_FILTER_LIST:
+                draft.showFilterList = !draft.showFilterList;
                 break;
 
             default:
