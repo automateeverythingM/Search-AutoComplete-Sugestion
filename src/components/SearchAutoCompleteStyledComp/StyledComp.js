@@ -327,6 +327,7 @@ export const Select = styled.div`
 export const SelectWrapper = styled.div`
     position: relative;
     height: 100%;
+    width: 10%;
 `;
 
 export const SelectLi = styled.li`
