@@ -278,7 +278,17 @@ export const Jumbotron = styled.div`
     border-radius: 1em;
     padding: 2em;
     background: #1c2321;
-    font-size: 20px;
+    font-size: 12px;
+
+    @media (min-width: 768px) {
+        font-size: 16px;
+    }
+    @media (min-width: 992px) {
+        font-size: 18px;
+    }
+    @media (min-width: 1200px) {
+        font-size: 20px;
+    }
 `;
 
 export const TitleMsg = styled.h1`
