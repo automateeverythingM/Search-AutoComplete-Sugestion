@@ -33,7 +33,7 @@ export const Wrapper = styled.div`
 
 export const SearchInputs = styled.div`
     display: flex;
-    width: 75%;
+    width: 70%;
     align-items: center;
     border-radius: 0.6em 0 0 0.6em;
     background-color: ${(props) => props.backgroundColor || "whitesmoke"};
@@ -338,7 +338,7 @@ export const Select = styled.div`
 export const SelectWrapper = styled.div`
     position: relative;
     height: 100%;
-    width: 10%;
+    width: 15%;
 `;
 
 export const SelectLi = styled.li`

@@ -22,7 +22,7 @@ function Selection({
     return (
         <SelectWrapper>
             <Select onClick={() => toggleFilterList()}>
-                <div>{selected.name}</div>
+                <div style={{ fontSize: "inherit" }}>{selected.name}</div>
                 <RiArrowDropDownLine />
             </Select>
             <UlSelect
