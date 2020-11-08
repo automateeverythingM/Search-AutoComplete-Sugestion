@@ -12,8 +12,7 @@ function App() {
                 color="white"
                 background="darkgray"
                 withFocus
-                circle
-                focusColor="black"
+                focusColor="#333"
                 size="200px"
             >
                 Primary

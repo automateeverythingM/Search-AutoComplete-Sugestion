@@ -1,22 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
-import { deleteTag } from "../store/MainSearch/mainSearchReducer";
 import { CloseTag, LiTag, TagLabel } from "../StyledComp";
 
-function TagStyledComponent({
+export default function TagStyledComponent({
     label,
     backgroundColor = "#709fb0",
     selectedTag,
-    idx,
-    deleteTag,
+    indx,
 }) {
     return (
         <LiTag backgroundColor={backgroundColor} selected={selectedTag}>
             <TagLabel>{label}</TagLabel>
             <CloseTag
-                onClick={() => {
-                    deleteTag(idx);
-                }}
+                data-id={indx}
                 selected={selectedTag}
                 backgroundColor={backgroundColor}
             >
@@ -25,10 +20,3 @@ function TagStyledComponent({
         </LiTag>
     );
 }
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        deleteTag: (id) => dispatch(deleteTag(id)),
-    };
-};
-export default connect(null, mapDispatchToProps)(TagStyledComponent);

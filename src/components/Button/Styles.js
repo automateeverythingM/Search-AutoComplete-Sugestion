@@ -52,7 +52,7 @@ export const BaseButton = styled.button`
         props.withFocus &&
         css`
             &:focus {
-                box-shadow: ${(props) => `0 0 0 1px ${props.focusColor}`};
+                box-shadow: ${(props) => `0 0 0 2px ${props.focusColor}`};
             }
         `}
 

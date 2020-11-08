@@ -14,7 +14,8 @@ function Selection({
     showList,
 }) {
     function clickHandler(e) {
-        if (selected.id === e.target.id) return;
+        const id = e?.target?.dataset?.id;
+        if (!id || selected.id === id) return;
         setSelected(e.target.dataset.id);
     }
     console.log("showFilterList", showList);

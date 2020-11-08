@@ -1,47 +1,37 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-    focusInput,
-    resetState,
-    setInputValue,
+    autocompleteListItemClick,
+    autocompleteListMouseEnter,
     setSelector,
-    setTempInputValue,
 } from "../store/MainSearch/mainSearchReducer";
 import { Li, UlDropdown } from "../StyledComp";
 
 function AutoCompleteStyled({
     autocompleteList: data,
     dropdownSelector,
-    setInputValue,
-    resetState,
     setSelector,
-    focusInput,
+    handleClickLi,
+    handleMouseEnter,
 }) {
     //resetujemo state zbog key pa posle setujemo input
     //NOTE: trebalo bi da  napisem jedan metod za oba
     function onClickHandler(e) {
-        resetState();
-        setInputValue(e.target.innerText);
-        focusInput();
+        handleClickLi(e.target.innerText);
     }
 
     return (
         <UlDropdown
             position="absolute"
             onClick={onClickHandler}
-            onMouseLeave={(e) => {
-                setSelector(-1);
-            }}
+            onMouseLeave={() => setSelector(-1)}
         >
             {data.map((item, index) => (
                 <Li
                     selected={index === dropdownSelector}
                     key={item.code}
                     data-id={index}
-                    onMouseEnter={() => {
-                        setSelector(index);
-                        setTempInputValue();
-                    }}
+                    onMouseEnter={() => handleMouseEnter(index)}
                 >
                     {item.name}
                 </Li>
@@ -57,10 +47,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     setSelector: (index) => dispatch(setSelector(index)),
-    resetState: () => dispatch(resetState()),
-    setInputValue: (value) => dispatch(setInputValue(value)),
-    setTempInputValue: () => dispatch(setTempInputValue()),
-    focusInput: (value) => dispatch(focusInput()),
+    handleClickLi: (value) => dispatch(autocompleteListItemClick(value)),
+    handleMouseEnter: (value) => dispatch(autocompleteListMouseEnter(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoCompleteStyled);

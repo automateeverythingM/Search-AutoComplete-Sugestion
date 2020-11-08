@@ -5,6 +5,7 @@ import { onDeleteHandler, manageTagList } from "./logic/tags";
 import menageSelector from "./logic/moveSelector";
 import axios from "axios";
 import { takeLatest, put } from "redux-saga/effects";
+import { cpxStateResetState } from "./logic/complexState";
 //! ****************************************************************//
 //!ACTIONTYPES CONSTANTS
 const DELETE_TAG = "DELETE_TAG";
@@ -26,6 +27,10 @@ const SET_SELECT_FILTER = "SET_SELECT_FILTERS";
 const TOGGLE_FILTER_LIST = "TOGGLE_FILTER_LIST";
 const FOCUS_INPUT = "FOCUS_INPUT";
 const ASSIGN_INPUT_REF = "ASSIGN_INPUT_REF";
+
+//ul autocomplete list
+const AUTOCOMPLETE_LIST_ITEM_CLICK = "AUTOCOMPLETE_LIST_ITEM_CLICK";
+const AUTOCOMPLETE_LIST_MOUSE_ENTER = "AUTOCOMPLETE_LIST_MOUSE_ENTER";
 
 function* getAutoCompleteList(action) {
     const {
@@ -125,6 +130,20 @@ export function toggleFilterList() {
     return { type: TOGGLE_FILTER_LIST, payload: {} };
 }
 
+export function autocompleteListItemClick(value) {
+    return {
+        type: AUTOCOMPLETE_LIST_ITEM_CLICK,
+        payload: { value },
+    };
+}
+
+export function autocompleteListMouseEnter(value) {
+    return {
+        type: AUTOCOMPLETE_LIST_MOUSE_ENTER,
+        payload: { value },
+    };
+}
+
 //! ****************************************************************//
 //! INITIAL STATE
 const initialState = {
@@ -191,12 +210,7 @@ export default function reducer(state = initialState, action) {
                 draft.inputValue = payload.value;
                 break;
             case RESET_STATE:
-                draft.autoSuggestion = "";
-                draft.inputValue = "";
-                draft.autocompleteList = [];
-                draft.dropdownSelector = -1;
-                draft.tempInputValue = "";
-                draft.tempAutoSuggestValue = "";
+                cpxStateResetState(draft);
                 break;
             case SET_ALL_INPUTS:
                 draft.autoSuggestion = payload.value;
@@ -245,11 +259,19 @@ export default function reducer(state = initialState, action) {
 
             case ASSIGN_INPUT_REF:
                 draft.inputRef = payload.value;
-                console.log("reducer -> draft.inputRef", draft.inputRef);
-                console.log("reducer -> payload.value", payload.value);
-
+                break;
+            //autocompleteList
+            case AUTOCOMPLETE_LIST_ITEM_CLICK:
+                draft.autocompleteList = [];
+                draft.inputValue = payload.value;
+                draft.inputRef.focus();
                 break;
 
+            case AUTOCOMPLETE_LIST_MOUSE_ENTER:
+                draft.tempInputValue = draft.inputValue;
+                draft.autoSuggestion = "";
+                draft.dropdownSelector = payload.value;
+                break;
             default:
                 break;
         }
